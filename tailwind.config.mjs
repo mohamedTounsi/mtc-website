@@ -7,6 +7,12 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        tommy:['"MADE Tommy Soft"', 'sans-serif'],
+        tommyOutline: ['"MADE Tommy Soft Outline"', 'sans-serif'],
+        dreams:['"Dreams Space"','sans-serif'],
+        sf:['"SF UI Text Regular"','sans-serif'],
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",

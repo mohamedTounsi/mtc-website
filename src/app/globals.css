@@ -1,3 +1,21 @@
+@import url('https://fonts.cdnfonts.com/css/made-tommy-soft-outline');
+
+@font-face {/*Dreams font import, make sure the font is located in public/assets/fonts*/
+  font-family: 'Dreams Space';
+  src: url('/assets/fonts/DREAMS.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SF UI Text Regular';
+  src:url('/assets/fonts/SFUIText-Regular.woff') format('woff');
+  font-style: normal;
+  font-weight: normal;
+
+  }
+  
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -16,6 +34,7 @@
 
 body {
   color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background-image: url("/assets/bg.png") ;
+  background-size: cover;
+  
 }
