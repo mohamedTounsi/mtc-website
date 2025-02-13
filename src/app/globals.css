@@ -34,7 +34,6 @@
 
 body {
   color: var(--foreground);
-  background-image: url("/assets/bg.png") ;
-  background-size: cover;
+  background-color: #0F0F0F;
   
 }

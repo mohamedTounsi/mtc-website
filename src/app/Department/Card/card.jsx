@@ -1,8 +1,7 @@
 
 import Arrow from "../Icons/Arrow"
 
-
-export default function card({icon,title,desc}){
+export default function card({icon,title,desc,delay}){
     return(
         <div className="w-[18%] " >
                 <div>
