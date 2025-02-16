@@ -1,3 +1,4 @@
+
 import Card from './Card/card'
 import Crystal from "./Icons/Crystal"
 import Crystal1 from "./Icons/Crystal1"
@@ -6,6 +7,7 @@ import Crystal3 from "./Icons/Crystal3"
 import { motion } from 'framer-motion';
 
 export default function departmet(){
+
     return(
         <div>
             <motion.div
@@ -20,10 +22,10 @@ export default function departmet(){
             </motion.div>
             <div className='mt-5 flex justify-around flex-wrap'>
             
-                <Card icon={<Crystal/>}  title="Media Department" desc="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsa voluptate laborum culpa fuga vel sapiente nemo fugiat temporibus reiciendis,"/>
-                <Card icon={<Crystal1/>}  title="Logistics Department" desc="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsa voluptate laborum culpa fuga vel sapiente nemo fugiat temporibus reiciendis,"/>
-                <Card icon={<Crystal2/>}  title="HR Department" desc="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsa voluptate laborum culpa fuga vel sapiente nemo fugiat temporibus reiciendis,"/>
-                <Card icon={<Crystal3/>}  title="Dev Department" desc="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsa voluptate laborum culpa fuga vel sapiente nemo fugiat temporibus reiciendis,"/>
+            <Card index="0" icon={<Crystal/>}  title="Media Department" desc="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsa voluptate laborum culpa fuga vel sapiente nemo fugiat temporibus reiciendis,"/>
+            <Card index="1" icon={<Crystal1/>}  title="Logistics Department" desc="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsa voluptate laborum culpa fuga vel sapiente nemo fugiat temporibus reiciendis,"/>
+            <Card index="2" icon={<Crystal2/>}  title="HR Department" desc="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsa voluptate laborum culpa fuga vel sapiente nemo fugiat temporibus reiciendis,"/>
+            <Card index="3" icon={<Crystal3/>}  title="Dev Department" desc="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsa voluptate laborum culpa fuga vel sapiente nemo fugiat temporibus reiciendis,"/>
             </div>
            
         </div>

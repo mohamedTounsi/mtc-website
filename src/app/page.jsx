@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <div>
         <Starfield
-          starCount={3500}
+          starCount={1}
           starColor={[255, 255, 255]}
           speedFactor={0.1}
         />
