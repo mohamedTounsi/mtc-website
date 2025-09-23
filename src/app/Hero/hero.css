@@ -1,13 +1,17 @@
 /*scroll animation*/
 
-.hero .scroll{
-    animation-name: animate-scroll;
-    animation-duration: 1s;
-    animation-iteration-count: infinite;
-    animation-timing-function:ease-in-out;
-    animation-direction:alternate;
+.hero .scroll {
+  animation-name: animate-scroll;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  animation-direction: alternate;
 }
 @keyframes animate-scroll {
-    from{margin-top:-4px;}
-    to{ margin-top: 0px;}
+  from {
+    margin-top: -4px;
+  }
+  to {
+    margin-top: 0px;
+  }
 }
