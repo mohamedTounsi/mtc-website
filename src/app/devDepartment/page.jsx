@@ -23,7 +23,7 @@ export default function DepartmentPage() {
     {
       name: "Mohamed Yassin Ghorbel",
       role: "Manager",
-      image: "/ghorbel1.png",
+      image: "/ghorbel.jpeg",
       linktree: "https://linktr.ee/ysn.ghrbl",
       socialLinks: [
         { icon: Github, url: "#", color: "hover:bg-gray-800" },
@@ -34,7 +34,7 @@ export default function DepartmentPage() {
     {
       name: "Mohamed Tounsi",
       role: "Developer",
-      image: "/mohamed1.png",
+      image: "/mohamed.jpeg",
       linktree: "https://linktr.ee/ROU8E",
       socialLinks: [
         { icon: Github, url: "#", color: "hover:bg-gray-800" },

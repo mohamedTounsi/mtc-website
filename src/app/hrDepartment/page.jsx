@@ -22,7 +22,7 @@ export default function DepartmentPage() {
     {
       name: "Amal Walha",
       role: "Manager",
-      image: "/amal1.png",
+      image: "/amal.jpeg",
       linktree: "https://linktr.ee/amalwalha",
       socialLinks: [
         { icon: Github, url: "#", color: "hover:bg-gray-800" },
@@ -33,7 +33,7 @@ export default function DepartmentPage() {
     {
       name: "Ahmed Ben Nouma",
       role: "Manager",
-      image: "/bennouma1.png",
+      image: "/bennouma.jpeg",
       linktree: "https://linktr.ee/bennoumaahmed72",
       socialLinks: [
         { icon: Github, url: "#", color: "hover:bg-gray-800" },
@@ -44,7 +44,7 @@ export default function DepartmentPage() {
     {
       name: "Soulaima Zghal",
       role: "Manager",
-      image: "/soulaima1.png",
+      image: "/soulaima.jpeg",
       linktree: "https://linktr.ee/soulaimaa",
       socialLinks: [
         { icon: Github, url: "#", color: "hover:bg-gray-800" },

@@ -268,7 +268,7 @@ export function AboutUs() {
           <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-purple-500 to-purple-400 rounded-2xl p-[2px] group-hover:p-[3px] transition-all duration-300">
             <div className="w-full h-full bg-gray-900 rounded-2xl overflow-hidden">
               <Image
-                src="/all2.png"
+                src="/all2.jpeg"
                 alt="About image"
                 width={1000}
                 height={1000}

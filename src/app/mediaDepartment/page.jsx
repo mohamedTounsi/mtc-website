@@ -22,7 +22,7 @@ export default function DepartmentPage() {
     {
       name: "Rieb Othman",
       role: "Manager",
-      image: "/Rieb1.png",
+      image: "/Rieb.jpeg",
       linktree: "https://linktr.ee/Rieb_Othman",
       socialLinks: [
         { icon: Github, url: "#", color: "hover:bg-gray-800" },
@@ -33,7 +33,7 @@ export default function DepartmentPage() {
     {
       name: "Ayoub Fourati",
       role: "Vedio Editor",
-      image: "/ayoub1.png",
+      image: "/ayoub.jpeg",
       linktree: "https://linktr.ee/ayoub.fourati",
       socialLinks: [
         { icon: Github, url: "#", color: "hover:bg-gray-800" },

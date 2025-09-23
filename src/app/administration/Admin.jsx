@@ -21,7 +21,7 @@ export default function Admin() {
     {
       name: "Oussema Mahfoudhi",
       role: "President",
-      image: "/oussema.png",
+      image: "/oussema.jpeg",
       linktree: "https://linktr.ee/wookie264",
       socialLinks: [
         { icon: Github, url: "#", color: "hover:bg-gray-800" },
@@ -32,7 +32,7 @@ export default function Admin() {
     {
       name: "Eya Jaoua",
       role: "Vice President",
-      image: "/eya.png",
+      image: "/eya2.jpeg",
       linktree: "https://linktr.ee/eya_jaoua",
       socialLinks: [
         { icon: Github, url: "#", color: "hover:bg-gray-800" },
