@@ -22,7 +22,7 @@ export default function DepartmentPage() {
     {
       name: "Rieb Othman",
       role: "Manager",
-      image: "/Rieb.jpeg",
+      image: "/rieb.jpeg",
       linktree: "https://linktr.ee/Rieb_Othman",
       socialLinks: [
         { icon: Github, url: "#", color: "hover:bg-gray-800" },
