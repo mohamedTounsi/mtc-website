@@ -41,7 +41,7 @@ export default function Department() {
   return (
     <section
       id="departments"
-      className="w-[92%] md:w-[86%] mx-auto px-4 sm:px-6 lg:px-8 text-white py-12 lg:py-20"
+      className="w-[92%] md:w-full mx-auto px-4 sm:px-6 lg:px-6 text-white py-12 lg:py-20"
     >
       {/* Heading */}
       <motion.div

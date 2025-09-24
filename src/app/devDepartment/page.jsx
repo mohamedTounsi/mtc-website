@@ -104,7 +104,7 @@ export default function DepartmentPage() {
                       />
                     </div>
 
-                    {/* Linktree */}
+                  {/* Linktree */}
                     <div className="absolute top-3 left-3 z-20">
                       <a
                         href={member.linktree}
@@ -112,6 +112,22 @@ export default function DepartmentPage() {
                         rel="noopener noreferrer"
                         className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-gradient-to-r from-green-500/90 to-emerald-500/90 backdrop-blur-xl border border-white/20 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-400/30 hover:scale-105 transition-all duration-300 text-white text-sm font-medium"
                       >
+                        <svg
+                          className="w-4 h-4"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                        >
+                          <path d="M7.953 15.066c-.08-.08-.08-.207 0-.287l2.68-2.68a2.5 2.5 0 0 1 3.536 0l2.68 2.68c.08.08.08.207 0 .287-.08.08-.207.08-.287 0l-2.68-2.68a2 2 0 0 0-2.828 0l-2.68 2.68c-.08.08-.207.08-.287 0z" />
+                          <path d="M16.047 8.934c.08.08.08.207 0 .287l-2.68 2.68a2.5 2.5 0 0 1-3.536 0l-2.68-2.68c-.08-.08-.08-.207 0-.287.08-.08.207-.08.287 0l2.68 2.68a2 2 0 0 0 2.828 0l2.68-2.68c.08-.08.207-.08.287 0z" />
+                          <circle
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                          />
+                        </svg>
                         <span>Linktree</span>
                       </a>
                     </div>
