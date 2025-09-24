@@ -2,20 +2,7 @@
 import React from "react";
 import { ExternalLink, Github, Linkedin, Globe, ArrowLeft } from "lucide-react";
 import BackArrow from "../components/BackArrow";
-
-// Mock Image component for Next.js
-const Image = ({ src, alt, fill, className, style }) => (
-  <img
-    src={src}
-    alt={alt}
-    className={className}
-    style={
-      fill
-        ? { ...style, objectFit: "cover", width: "100%", height: "100%" }
-        : style
-    }
-  />
-);
+import Image from "next/image";
 
 export default function DepartmentPage() {
   const teamMembers = [
@@ -108,12 +95,22 @@ export default function DepartmentPage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
                     <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
 
-                    <Image
-                      src={member.image}
-                      alt={member.name}
-                      fill
-                      className="transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
-                    />
+                    <div className="relative aspect-[4/5] overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
+                      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+
+                      <Image
+                        src={member.image}
+                        alt={member.name}
+                        fill
+                        style={{
+                          objectFit: "cover",
+                          width: "100%",
+                          height: "100%",
+                        }} // ensures no stretching
+                        className="transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
+                      />
+                    </div>
 
                     <div className="absolute top-3 left-3 z-20">
                       <a

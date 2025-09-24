@@ -19,21 +19,19 @@ export default function Gallery() {
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
-  const prevSlide = () => {
+  const prevSlide = () =>
     setCurrent((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-  };
 
-  const nextSlide = () => {
+  const nextSlide = () =>
     setCurrent((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-  };
 
+  // Autoplay
   useEffect(() => {
-    const interval = setInterval(() => {
-      nextSlide();
-    }, 3000);
+    const interval = setInterval(nextSlide, 3000);
     return () => clearInterval(interval);
-  }, [current]);
+  }, []); // removed 'current' from dependency to avoid resetting interval
 
+  // Touch handlers
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
   };
@@ -43,12 +41,8 @@ export default function Gallery() {
   };
 
   const handleTouchEnd = () => {
-    if (touchStartX.current - touchEndX.current > 50) {
-      nextSlide();
-    }
-    if (touchStartX.current - touchEndX.current < -50) {
-      prevSlide();
-    }
+    if (touchStartX.current - touchEndX.current > 50) nextSlide();
+    if (touchStartX.current - touchEndX.current < -50) prevSlide();
   };
 
   return (
@@ -86,7 +80,7 @@ export default function Gallery() {
         onClick={prevSlide}
         className="absolute left-3 md:left-5 top-1/2 -translate-y-1/2 bg-black/50 p-2 md:p-3 rounded-full text-white hover:bg-black/70 transition"
       >
-        <ChevronLeft size={20} className="md:size-[28px]" />
+        <ChevronLeft size={28} />
       </button>
 
       {/* Right Arrow */}
@@ -94,7 +88,7 @@ export default function Gallery() {
         onClick={nextSlide}
         className="absolute right-3 md:right-5 top-1/2 -translate-y-1/2 bg-black/50 p-2 md:p-3 rounded-full text-white hover:bg-black/70 transition"
       >
-        <ChevronRight size={20} className="md:size-[28px]" />
+        <ChevronRight size={28} />
       </button>
 
       {/* Dots Indicator */}

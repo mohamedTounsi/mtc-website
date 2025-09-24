@@ -29,10 +29,7 @@ export default function FormPage() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -77,6 +74,7 @@ export default function FormPage() {
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-black to-purple-800 relative overflow-hidden">
       <Toaster position="top-right" />
 
+      {/* Background dots */}
       <div className="absolute inset-0 opacity-20">
         <div
           className="absolute inset-0"
@@ -87,6 +85,7 @@ export default function FormPage() {
         />
       </div>
 
+      {/* Background gradients */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full blur-3xl opacity-30 animate-pulse"></div>
         <div
@@ -96,6 +95,7 @@ export default function FormPage() {
       </div>
 
       <div className="relative z-10">
+        {/* Back button */}
         <div className="absolute top-6 left-6 z-20">
           <button
             onClick={handleGoHome}
@@ -108,6 +108,7 @@ export default function FormPage() {
         <div className="flex items-center justify-center min-h-screen px-4 py-20">
           <div className="w-full max-w-2xl">
             <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
+              {/* Header */}
               <div className="px-8 py-6 bg-gradient-to-r from-purple-600/20 to-purple-400/20 border-b border-white/10">
                 <h1 className="text-2xl font-bold text-white mb-2">
                   Membership Form
@@ -117,59 +118,40 @@ export default function FormPage() {
                 </p>
               </div>
 
+              {/* Form */}
               <form onSubmit={handleSubmit} className="p-8 space-y-6">
+                {/* First & Last Name */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {" "}
-                  <div>
-                    {" "}
-                    <label className="block text-sm font-medium text-white mb-2">
-                      {" "}
-                      First Name{" "}
-                    </label>{" "}
-                    <div className="relative">
-                      {" "}
-                      <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300" />{" "}
-                      <input
-                        type="text"
-                        name="firstName"
-                        value={formData.firstName}
-                        onChange={handleInputChange}
-                        required
-                        placeholder="Enter your first name"
-                        className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-purple-300/70 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20"
-                      />{" "}
-                    </div>{" "}
-                  </div>{" "}
-                  <div>
-                    {" "}
-                    <label className="block text-sm font-medium text-white mb-2">
-                      {" "}
-                      Last Name{" "}
-                    </label>{" "}
-                    <div className="relative">
-                      {" "}
-                      <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300" />{" "}
-                      <input
-                        type="text"
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleInputChange}
-                        required
-                        placeholder="Enter your last name"
-                        className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-purple-300/70 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20"
-                      />{" "}
-                    </div>{" "}
-                  </div>{" "}
-                </div>{" "}
+                  {["firstName", "lastName"].map((field, idx) => (
+                    <div key={field}>
+                      <label className="block text-sm font-medium text-white mb-2">
+                        {field === "firstName" ? "First Name" : "Last Name"}
+                      </label>
+                      <div className="relative">
+                        <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300" />
+                        <input
+                          type="text"
+                          name={field}
+                          value={formData[field]}
+                          onChange={handleInputChange}
+                          required
+                          placeholder={`Enter your ${
+                            field === "firstName" ? "first" : "last"
+                          } name`}
+                          className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-purple-300/70 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Email */}
                 <div>
-                  {" "}
                   <label className="block text-sm font-medium text-white mb-2">
-                    {" "}
-                    Email Address{" "}
-                  </label>{" "}
+                    Email Address
+                  </label>
                   <div className="relative">
-                    {" "}
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300" />{" "}
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300" />
                     <input
                       type="email"
                       name="email"
@@ -178,18 +160,17 @@ export default function FormPage() {
                       required
                       placeholder="Enter your email"
                       className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-purple-300/70 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20"
-                    />{" "}
-                  </div>{" "}
-                </div>{" "}
+                    />
+                  </div>
+                </div>
+
+                {/* Phone */}
                 <div>
-                  {" "}
                   <label className="block text-sm font-medium text-white mb-2">
-                    {" "}
-                    Phone Number{" "}
-                  </label>{" "}
+                    Phone Number
+                  </label>
                   <div className="relative">
-                    {" "}
-                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300" />{" "}
+                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300" />
                     <input
                       type="tel"
                       name="phone"
@@ -197,17 +178,16 @@ export default function FormPage() {
                       onChange={handleInputChange}
                       placeholder="Enter your phone number"
                       className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-purple-300/70 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20"
-                    />{" "}
-                  </div>{" "}
-                </div>{" "}
+                    />
+                  </div>
+                </div>
+
+                {/* Niveau d'étude */}
                 <div>
-                  {" "}
                   <label className="block text-sm font-medium text-white mb-3">
-                    {" "}
-                    Niveau d'étude{" "}
-                  </label>{" "}
+                    Niveau d'étude
+                  </label>
                   <div className="grid grid-cols-2 gap-3 text-white text-sm">
-                    {" "}
                     {[
                       "P-LSI",
                       "D-LSI",
@@ -222,7 +202,6 @@ export default function FormPage() {
                         key={n}
                         className="flex items-center space-x-2 bg-white/5 px-3 py-2 rounded-lg border border-white/20 cursor-pointer hover:bg-white/10"
                       >
-                        {" "}
                         <input
                           type="radio"
                           name="niveau"
@@ -231,20 +210,19 @@ export default function FormPage() {
                           onChange={handleInputChange}
                           className="text-purple-400 focus:ring-purple-500"
                           required
-                        />{" "}
-                        <span>{n}</span>{" "}
+                        />
+                        <span>{n}</span>
                       </label>
-                    ))}{" "}
-                  </div>{" "}
-                </div>{" "}
+                    ))}
+                  </div>
+                </div>
+
+                {/* Membership Type */}
                 <div>
-                  {" "}
                   <label className="block text-sm font-medium text-white mb-3">
-                    {" "}
-                    Membership Type{" "}
-                  </label>{" "}
+                    Membership Type
+                  </label>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-white text-sm">
-                    {" "}
                     {[
                       "New members",
                       "Renewing members",
@@ -254,7 +232,6 @@ export default function FormPage() {
                         key={m}
                         className="flex items-center space-x-2 bg-white/5 px-3 py-2 rounded-lg border border-white/20 cursor-pointer hover:bg-white/10"
                       >
-                        {" "}
                         <input
                           type="radio"
                           name="membership"
@@ -263,19 +240,19 @@ export default function FormPage() {
                           onChange={handleInputChange}
                           className="text-purple-400 focus:ring-purple-500"
                           required
-                        />{" "}
-                        <span>{m}</span>{" "}
+                        />
+                        <span>{m}</span>
                       </label>
-                    ))}{" "}
-                  </div>{" "}
-                </div>{" "}
+                    ))}
+                  </div>
+                </div>
+
+                {/* Group Name */}
                 {formData.membership === "Group of members" && (
                   <div>
-                    {" "}
                     <label className="block text-sm font-medium text-white mb-2">
-                      {" "}
-                      Group's Name{" "}
-                    </label>{" "}
+                      Group's Name
+                    </label>
                     <input
                       type="text"
                       name="groupName"
@@ -283,18 +260,17 @@ export default function FormPage() {
                       onChange={handleInputChange}
                       placeholder="Enter your group's name"
                       className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-purple-300/70 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20"
-                    />{" "}
+                    />
                   </div>
-                )}{" "}
+                )}
+
+                {/* Address */}
                 <div>
-                  {" "}
                   <label className="block text-sm font-medium text-white mb-2">
-                    {" "}
-                    Home Address{" "}
-                  </label>{" "}
+                    Home Address
+                  </label>
                   <div className="relative">
-                    {" "}
-                    <Home className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300" />{" "}
+                    <Home className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300" />
                     <input
                       type="text"
                       name="address"
@@ -302,18 +278,17 @@ export default function FormPage() {
                       onChange={handleInputChange}
                       placeholder="Enter your address"
                       className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-purple-300/70 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20"
-                    />{" "}
-                  </div>{" "}
-                </div>{" "}
+                    />
+                  </div>
+                </div>
+
+                {/* Facebook */}
                 <div>
-                  {" "}
                   <label className="block text-sm font-medium text-white mb-2">
-                    {" "}
-                    Facebook Profile Link{" "}
-                  </label>{" "}
+                    Facebook Profile Link
+                  </label>
                   <div className="relative">
-                    {" "}
-                    <Facebook className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300" />{" "}
+                    <Facebook className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300" />
                     <input
                       type="url"
                       name="facebook"
@@ -321,23 +296,21 @@ export default function FormPage() {
                       onChange={handleInputChange}
                       placeholder="Enter your Facebook profile link"
                       className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-purple-300/70 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20"
-                    />{" "}
-                  </div>{" "}
-                </div>{" "}
+                    />
+                  </div>
+                </div>
+
+                {/* Pay Now */}
                 <div>
-                  {" "}
                   <label className="block text-sm font-medium text-white mb-3">
-                    {" "}
-                    Pay Now?{" "}
-                  </label>{" "}
+                    Pay Now?
+                  </label>
                   <div className="flex gap-4 text-white text-sm">
-                    {" "}
                     {["Yes", "No"].map((p) => (
                       <label
                         key={p}
                         className="flex items-center space-x-2 bg-white/5 px-3 py-2 rounded-lg border border-white/20 cursor-pointer hover:bg-white/10"
                       >
-                        {" "}
                         <input
                           type="radio"
                           name="payNow"
@@ -346,12 +319,14 @@ export default function FormPage() {
                           onChange={handleInputChange}
                           className="text-purple-400 focus:ring-purple-500"
                           required
-                        />{" "}
-                        <span>{p}</span>{" "}
+                        />
+                        <span>{p}</span>
                       </label>
-                    ))}{" "}
-                  </div>{" "}
+                    ))}
+                  </div>
                 </div>
+
+                {/* Submit */}
                 <button
                   type="submit"
                   disabled={isSubmitting}

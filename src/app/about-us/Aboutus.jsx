@@ -134,10 +134,10 @@ export function Benefits() {
             <div className="w-full h-full bg-gray-900 rounded-2xl overflow-hidden">
               <Image
                 src="/heartpic.webp"
-                alt="Benefits image"
-                width={1000}
-                height={1000}
-                className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+                alt="Benefits"
+                width={600}
+                height={500}
+                priority
               />
             </div>
           </div>
@@ -270,9 +270,10 @@ export function AboutUs() {
               <Image
                 src="/all2.jpeg"
                 alt="About image"
-                width={1000}
-                height={1000}
+                width={400}
+                height={400}
                 className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+                priority
               />
             </div>
           </div>
@@ -305,6 +306,7 @@ export function AboutUs() {
         width={1000}
         height={1000}
         className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+        priority
       />
     </div>
   </div>

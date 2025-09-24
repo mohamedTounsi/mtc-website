@@ -43,15 +43,17 @@ export default function Admin() {
   ];
 
   return (
-    <div className="relative pt-[63px] md:pt-0 min-h-screen overflow-hidden ">
+    <div className="relative pt-[63px] md:pt-0 min-h-screen overflow-hidden">
+      {/* Background pulses */}
       <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0  animate-pulse"></div>
+        <div className="absolute inset-0 animate-pulse"></div>
       </div>
       <div className="absolute inset-0 opacity-15">
-        <div className="absolute inset-0 "></div>
+        <div className="absolute inset-0"></div>
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10 p-8">
+        {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-[6px] md:text-[18px] py-4 md:py-6 font-dreams bg-gradient-to-r from-white via-purple-200 to-white bg-clip-text text-transparent mb-4 tracking-tight">
             ADMINISTRATION
@@ -70,12 +72,16 @@ export default function Admin() {
           </div>
         </div>
 
+        {/* Admin Cards */}
         <div className="grid lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {admins.map((admin) => (
             <div key={admin.name} className="group pt-5 relative">
+              {/* Gradient hover background */}
               <div className="absolute inset-0 bg-gradient-to-r from-purple-500/0 via-purple-500/8 to-purple-500/0 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-700 opacity-0 group-hover:opacity-100 scale-95 group-hover:scale-105"></div>
 
+              {/* Card */}
               <div className="relative bg-gradient-to-br from-white/[0.04] to-white/[0.01] backdrop-blur-2xl rounded-2xl border border-white/5 group-hover:border-purple-400/20 transition-all duration-500 overflow-hidden shadow-xl shadow-black/40">
+                {/* Role Badge */}
                 <div className="absolute top-4 right-4 z-20">
                   <div className="px-3 py-1.5 bg-gradient-to-r from-purple-500/70 to-pink-500/70 backdrop-blur-xl rounded-full border border-white/10">
                     <span className="text-xs font-bold text-white uppercase tracking-widest">
@@ -84,6 +90,7 @@ export default function Admin() {
                   </div>
                 </div>
 
+                {/* Image Section */}
                 <div className="relative pt-9 mx-6 mb-6 rounded-xl overflow-hidden shadow-xl group-hover:shadow-purple-500/10 transition-all duration-500">
                   <div className="relative aspect-square overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
@@ -96,12 +103,13 @@ export default function Admin() {
                       className="transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
                     />
 
+                    {/* Linktree Button */}
                     <div className="absolute top-3 left-3 z-20">
                       <a
                         href={admin.linktree}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center space-x-2 px-2 py-1  md:px-3 md:py-2 rounded-lg bg-gradient-to-r from-green-500/90 to-emerald-500/90 backdrop-blur-xl border border-white/20 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-400/30 hover:scale-105 transition-all duration-300 text-white text-sm font-medium"
+                        className="flex items-center space-x-2 px-2 py-1 md:px-3 md:py-2 rounded-lg bg-gradient-to-r from-green-500/90 to-emerald-500/90 backdrop-blur-xl border border-white/20 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-400/30 hover:scale-105 transition-all duration-300 text-white text-sm font-medium"
                       >
                         <svg
                           className="w-4 h-4"
@@ -119,7 +127,7 @@ export default function Admin() {
                             strokeWidth="1.5"
                           />
                         </svg>
-                        <span className="text-[12px] md:text-[16px] ">
+                        <span className="text-[12px] md:text-[16px]">
                           Linktree
                         </span>
                       </a>
@@ -127,11 +135,11 @@ export default function Admin() {
                   </div>
                 </div>
 
+                {/* Name */}
                 <div className="px-6 pb-6 text-center">
                   <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-purple-200 transition-colors duration-300">
                     {admin.name}
                   </h3>
-
                   <div className="relative w-16 h-0.5 mx-auto mb-3 rounded-full overflow-hidden bg-white/5">
                     <div className="absolute inset-0 bg-gradient-to-r from-purple-400/60 to-pink-400/60 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-700 rounded-full"></div>
                   </div>
@@ -141,6 +149,7 @@ export default function Admin() {
           ))}
         </div>
 
+        {/* Footer Text */}
         <div className="mt-16 text-center">
           <div className="inline-flex items-center space-x-2 px-4 py-2 bg-white/[0.02] backdrop-blur-xl rounded-full border border-white/5">
             <div className="w-1.5 h-1.5 bg-emerald-400/60 rounded-full animate-pulse"></div>
