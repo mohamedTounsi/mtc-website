@@ -63,10 +63,9 @@ export default function Department() {
           viewport={{ once: true }}
           className="text-gray-400 text-base sm:text-lg lg:text-xl leading-relaxed max-w-4xl mt-8 mx-auto lg:mx-0"
         >
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa
-          voluptate laborum culpa fuga vel sapiente nemo fugiat temporibus
-          reiciendis, aut non debitis cum vero quasi, animi repudiandae
-          voluptates reprehenderit incidunt.
+          At MTC, our departments work hand in hand to bring ideas to life. Each
+          team has a unique role in shaping creativity, innovation, and
+          community:
         </motion.p>
       </motion.div>
 
