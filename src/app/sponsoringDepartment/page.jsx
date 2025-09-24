@@ -9,7 +9,7 @@ export default function DepartmentPage() {
     {
       name: "Med Taha Ghariani",
       role: "Manager",
-      image: "/taha1.png",
+      image: "/taha.jpeg",
       linktree: "https://linktr.ee/Tattou9?utm_source=linktree_admin_share",
       socialLinks: [
         { icon: Github, url: "#", color: "hover:bg-gray-800" },
@@ -20,7 +20,7 @@ export default function DepartmentPage() {
     {
       name: "Malek Jribi",
       role: "Manager",
-      image: "/malek1.png",
+      image: "/malek.jpeg",
       linktree: "https://linktr.ee/malek_jribi",
       socialLinks: [
         { icon: Github, url: "#", color: "hover:bg-gray-800" },
