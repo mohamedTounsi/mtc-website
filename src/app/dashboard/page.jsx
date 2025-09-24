@@ -245,7 +245,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {members.length === 0 ? (
           <div className="bg-white/5 backdrop-blur-lg border border-purple-500/20 rounded-2xl p-12 text-center">
             <div className="text-6xl mb-4">👥</div>
