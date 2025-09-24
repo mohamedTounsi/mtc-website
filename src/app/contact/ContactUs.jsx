@@ -31,7 +31,7 @@ export default function ContactUs() {
       </div>
 
       {/* Buttons */}
-      <div className="flex flex-col md:flex-row gap-8 mt-6 z-10">
+      <div className="flex flex-col md:flex-row items-center gap-8 mt-6 z-10">
         {/* Call Button */}
         <a
           href="tel:+21655281375"
