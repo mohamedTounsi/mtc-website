@@ -2,7 +2,7 @@
 "use client";
 import Swal from "sweetalert2";
 import { useState, useEffect } from "react";
-import { Trash2, Eye, EyeOff, Lock, Shield } from "lucide-react";
+import { Trash2, Eye, EyeOff, Lock, Shield , Download} from "lucide-react";
 import toast from "react-hot-toast";
 
 export default function DashboardPage() {
@@ -24,6 +24,9 @@ export default function DashboardPage() {
     }
   }, []);
 
+
+  
+
   const fetchMembers = async () => {
     try {
       const res = await fetch("/api/members");
@@ -34,6 +37,16 @@ export default function DashboardPage() {
       console.error(err);
     }
   };
+
+  const handleExport = async () => {
+  try {
+    // Trigger the download by opening the API route in a new window
+    window.open('/api/export-members', '_blank');
+  } catch (error) {
+    console.error('Error exporting members:', error);
+    // Handle any errors here
+  }
+};
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -224,7 +237,7 @@ export default function DashboardPage() {
                 Manage and view all registered members
               </p>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex flex-col sm:flex-row items-center gap-4">
               <div className="bg-purple-600/20 backdrop-blur-sm border border-purple-400/30 rounded-xl px-4 py-2">
                 <span className="text-purple-300 text-sm font-medium">
                   Total Members
@@ -233,13 +246,22 @@ export default function DashboardPage() {
                   {members.length}
                 </div>
               </div>
-              <button
-                onClick={handleLogout}
-                className="bg-red-600/20 hover:bg-red-600/30 backdrop-blur-sm border border-red-400/30 text-red-300 hover:text-red-200 px-4 py-2 rounded-xl transition-all duration-200 flex items-center space-x-2"
-              >
-                <Lock className="w-4 h-4" />
-                <span>Logout</span>
-              </button>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button
+                  onClick={handleExport}
+                  className="bg-violet-600/20 hover:bg-violet-600/30 backdrop-blur-sm border border-violet-400/30 text-violet-300 hover:text-violet-200 px-4 py-2 rounded-xl transition-all duration-200 flex items-center space-x-2"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Export</span>
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="bg-red-600/20 hover:bg-red-600/30 backdrop-blur-sm border border-red-400/30 text-red-300 hover:text-red-200 px-4 py-2 rounded-xl transition-all duration-200 flex items-center space-x-2"
+                >
+                  <Lock className="w-4 h-4" />
+                  <span>Logout</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
