@@ -43,7 +43,7 @@ export default function Hero() {
 
           {/* Nav Links */}
           <ul className="hidden md:flex items-center gap-4 lg:gap-6 xl:gap-8 text-white/80 text-sm lg:text-base font-mono">
-            {["Home", "Benefits", "Departments", "Contact"].map((link) => (
+            {["Home", "Benefits","Events", "Departments", "Contact"].map((link) => (
               <li
                 key={link}
                 className="hover:text-purple-400 cursor-pointer transition-all duration-300 hover:scale-105 relative group"
