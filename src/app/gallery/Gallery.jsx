@@ -6,30 +6,47 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function Gallery() {
   const images = [
+    "/gallery10.jpg",
+    "/gallery9.jpg",
+    "/gallery11.jpg",
+    "/gallery12.jpg",
     "/gallery5.jpg",
-    "/gallery2.jpg",
-    "/gallery3.jpg",
-    "/gallery4.jpg",
     "/gallery6.jpg",
-    "/gallery7.jpg",
+    "/gallery4.jpg",
     "/gallery8.jpg",
+    "/gallery3.jpg",
   ];
 
   const [current, setCurrent] = useState(0);
+  const intervalRef = useRef(null);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
-  const prevSlide = () =>
+  // Function to go to the previous slide
+  const prevSlide = () => {
+    resetAutoplay();
     setCurrent((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
 
-  const nextSlide = () =>
+  // Function to go to the next slide
+  const nextSlide = () => {
+    resetAutoplay();
     setCurrent((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  };
 
-  // Autoplay
+  // Function to reset autoplay timer
+  const resetAutoplay = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
+      setCurrent((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    }, 5000);
+  };
+
+  // Start autoplay
   useEffect(() => {
-    const interval = setInterval(nextSlide, 3000);
-    return () => clearInterval(interval);
-  }, []); // removed 'current' from dependency to avoid resetting interval
+    resetAutoplay();
+    return () => clearInterval(intervalRef.current);
+  }, []);
 
   // Touch handlers
   const handleTouchStart = (e) => {
@@ -96,7 +113,10 @@ export default function Gallery() {
         {images.map((_, index) => (
           <div
             key={index}
-            onClick={() => setCurrent(index)}
+            onClick={() => {
+              resetAutoplay();
+              setCurrent(index);
+            }}
             className={`w-2 h-2 md:w-3 md:h-3 rounded-full cursor-pointer transition ${
               current === index ? "bg-white" : "bg-gray-400"
             }`}

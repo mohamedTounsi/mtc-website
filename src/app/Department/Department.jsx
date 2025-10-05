@@ -24,7 +24,7 @@ export default function Department() {
     },
     {
       icon: <Users />,
-      title: "HR Department",
+      title: "HR & Logistics Department",
       desc: "The HR Department focuses on people — the heart of our club. They manage recruitment, nurture members’ skills, and ensure strong collaboration across teams, creating a supportive and motivating environment for everyone.",
       gradient: "from-purple-500 to-purple-300",
       slug: "hrDepartment",

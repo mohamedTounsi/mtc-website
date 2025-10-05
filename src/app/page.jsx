@@ -10,6 +10,7 @@ import Video from "./components/Video";
 import Footer from "./footer/Footer";
 import ContactUs from "./contact/ContactUs";
 import Gallery from "./gallery/Gallery";
+import Events from "./Events/Events";
 
 export default function Home() {
   useEffect(() => {
@@ -23,6 +24,7 @@ export default function Home() {
       <History />
       <AboutUs />
       <Benefits />
+      <Events />
       <Department />
       <Admin />
       <Gallery />
