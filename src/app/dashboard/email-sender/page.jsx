@@ -71,19 +71,20 @@ export default function EmailSenderPage() {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="text-white"
+      className="text-white rounded-xl min-h-screen  relative overflow-hidden"
     >
-    <div className="min-h-screen  relative overflow-hidden">
       <Toaster position="top-right" />
       <div className="relative z-10">
-        <div className=" flex items-center justify-center min-h-screen px-4 py-20">
-          <div className="w-full max-w-xl">
-            <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 shadow-purple-900/30 shadow-lg overflow-hidden">
-              <div className="px-8 py-6 bg-gradient-to-r from-purple-900/40 to-fuchsia-900/40 border-b border-purple-800/60">
+        <div className="flex items-center justify-center min-h-screen px-0 py-0">
+          <div className="w-full"> {/* Full width container */}
+            <div className="bg-white/5 backdrop-blur-xl rounded-none border-none shadow-purple-900/30 shadow-lg overflow-hidden w-full">
+              {/* Header */}
+              <div className="px-8 py-6 bg-gradient-to-r from-purple-900/40 to-fuchsia-900/40 border-b border-purple-800/60 w-full">
+              
                 <h1 className="text-2xl font-bold text-white mb-2">Email Sender</h1>
                 <p className="text-purple-200 text-sm">Choose recipients and send a mass email to your members.</p>
               </div>
-              <form onSubmit={handleSubmit} className="p-8 space-y-7">
+              <form onSubmit={handleSubmit} className="p-8 w-full space-y-7">
                 <div>
                   <label className="block text-sm font-medium text-white mb-3">To:</label>
                   <div className="grid grid-cols-2 gap-3 text-white text-sm">
@@ -107,7 +108,7 @@ export default function EmailSenderPage() {
                     ))}
                   </div>
                   {form.to === "group" && (
-                    <div className="mt-4">
+                    <div className="mt-4 w-full">
                       <label className="block text-sm font-medium text-white mb-2">Group Name</label>
                       <input
                         type="text"
@@ -121,7 +122,7 @@ export default function EmailSenderPage() {
                     </div>
                   )}
                 </div>
-                <div>
+                <div className="w-full">
                   <label className="block text-sm font-medium text-white mb-2">Subject</label>
                   <input
                     type="text"
@@ -133,7 +134,7 @@ export default function EmailSenderPage() {
                     required
                   />
                 </div>
-                <div>
+                <div className="w-full">
                   <label className="block text-sm font-medium text-white mb-2">Message</label>
                   <textarea
                     name="message"
@@ -147,31 +148,20 @@ export default function EmailSenderPage() {
                 </div>
                 <button
                   type="submit"
-                  disabled //={isSending}
-                  className="w-full py-3 px-6 bg-gradient-to-r from-purple-600 to-purple-500 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-purple-600 focus:ring-2 focus:ring-purple-500/50 transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  disabled//={isSending}
+                  className="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-purple-600 to-purple-500 text-white font-semibold  hover:from-purple-700 hover:to-purple-600 focus:ring-2 focus:ring-purple-500/50 transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
-                  {isSending ? (
-                    <>
-                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-5 h-5" />
-                      Send Email
-                    </>
-                  )}
+                  <Send className="w-5 h-5" />
+                  Send Email (Locked)
                 </button>
               </form>
             </div>
-
             <p className="text-center text-purple-300/70 text-sm mt-6">
               Email privacy is strictly enforced by your club's dashboard.
             </p>
           </div>
         </div>
       </div>
-    </div>
     </motion.div>
   );
 }
