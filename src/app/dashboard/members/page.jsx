@@ -49,6 +49,14 @@ export default function DashboardPage() {
       console.error("Failed to update status:", err);
     }
   };
+  const handleExport = async () => {
+    try {
+      // This will trigger your backend route to download the file
+      window.open("/api/export-members", "_blank");
+    } catch (error) {
+      console.error("Error exporting members:", error);
+    }
+  };
 
   const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this member?")) return;
@@ -102,7 +110,10 @@ export default function DashboardPage() {
                 Manage and track all registered members
               </p>
             </div>
-            <button className="inline-flex items-center px-4 py-2 border border-gray-600 rounded-lg text-sm font-medium text-gray-300 bg-[#222] hover:bg-[#2a2a2a] transition-colors">
+            <button
+              onClick={handleExport}
+              className="inline-flex items-center px-4 py-2 border border-gray-600 rounded-lg text-sm font-medium text-gray-300 bg-[#222] hover:bg-[#2a2a2a] transition-colors"
+            >
               <Download className="w-4 h-4 mr-2" />
               Export Data
             </button>
