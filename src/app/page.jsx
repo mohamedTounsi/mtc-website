@@ -1,6 +1,5 @@
 "use client";
 import { useEffect } from "react";
-import Starfield from "react-starfield";
 
 import Hero from "./Hero/hero";
 import Department from "./Department/Department";
@@ -19,7 +18,6 @@ export default function Home() {
 
   return (
     <div>
-      <Starfield starCount={1} starColor={[255, 255, 255]} speedFactor={0.1} />
       <Hero />
       <History />
       <AboutUs />

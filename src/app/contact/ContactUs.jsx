@@ -21,7 +21,7 @@ export default function ContactUs() {
       {/* Mockup Image */}
       <div className="relative w-full max-w-2xl flex justify-center mb-12 z-10">
         <Image
-          src="/mockups.png"
+          src="/mockups.svg"
           alt="Contact Mockup"
           width={1500}
           height={1500}
@@ -34,7 +34,7 @@ export default function ContactUs() {
       <div className="flex flex-col md:flex-row items-center gap-8 mt-6 z-10">
         {/* Call Button */}
         <a
-          href="tel:+21655281375"
+          href="tel:+21628616387"
           aria-label="Call us"
           className="rounded-2xl text-[6px] font-semibold tracking-wide shadow-lg transition-transform duration-300"
         >
