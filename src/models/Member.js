@@ -10,7 +10,7 @@ const MemberSchema = new mongoose.Schema(
     membership: { type: String, required: true },
     groupName: String,
     address: String,
-    facebook: String,
+    facebook: { type: String, required: true },
     payNow: { type: String, enum: ["Yes", "No"], required: true },
     paid: { type: Boolean, default: false },
   },
