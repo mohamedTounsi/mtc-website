@@ -32,7 +32,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900/20 to-gray-900 text-white p-4 sm:p-6 lg:p-8">
-      <div className="max-w-7xl mx-auto">
+      <div className="w-[90%] mx-auto">
         {/* Header Section */}
         <div className="mb-12">
           <div className="relative">

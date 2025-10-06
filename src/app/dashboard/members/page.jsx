@@ -49,9 +49,9 @@ export default function DashboardPage() {
       console.error("Failed to update status:", err);
     }
   };
+
   const handleExport = async () => {
     try {
-      // This will trigger your backend route to download the file
       window.open("/api/export-members", "_blank");
     } catch (error) {
       console.error("Error exporting members:", error);
@@ -123,53 +123,47 @@ export default function DashboardPage() {
 
       <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-[#1b1b1b] rounded-xl border border-gray-700 p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-400">Total Members</p>
-                <p className="text-3xl font-bold mt-2 text-white">
-                  {stats.total}
-                </p>
-              </div>
-              <div className="bg-blue-900/40 rounded-full p-3">
-                <Users className="w-6 h-6 text-blue-400" />
-              </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
+          <div className="bg-[#1b1b1b] rounded-xl border border-gray-700 p-6 flex justify-between items-center">
+            <div>
+              <p className="text-sm text-gray-400">Total Members</p>
+              <p className="text-3xl font-bold mt-2 text-white">
+                {stats.total}
+              </p>
+            </div>
+            <div className="bg-blue-900/40 rounded-full p-3">
+              <Users className="w-6 h-6 text-blue-400" />
             </div>
           </div>
 
-          <div className="bg-[#1b1b1b] rounded-xl border border-gray-700 p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-400">Paid Members</p>
-                <p className="text-3xl font-bold mt-2 text-green-400">
-                  {stats.paid}
-                </p>
-              </div>
-              <div className="bg-green-900/30 rounded-full p-3">
-                <DollarSign className="w-6 h-6 text-green-400" />
-              </div>
+          <div className="bg-[#1b1b1b] rounded-xl border border-gray-700 p-6 flex justify-between items-center">
+            <div>
+              <p className="text-sm text-gray-400">Paid Members</p>
+              <p className="text-3xl font-bold mt-2 text-green-400">
+                {stats.paid}
+              </p>
+            </div>
+            <div className="bg-green-900/30 rounded-full p-3">
+              <DollarSign className="w-6 h-6 text-green-400" />
             </div>
           </div>
 
-          <div className="bg-[#1b1b1b] rounded-xl border border-gray-700 p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-400">Unpaid Members</p>
-                <p className="text-3xl font-bold mt-2 text-red-400">
-                  {stats.unpaid}
-                </p>
-              </div>
-              <div className="bg-red-900/30 rounded-full p-3">
-                <TrendingUp className="w-6 h-6 text-red-400" />
-              </div>
+          <div className="bg-[#1b1b1b] rounded-xl border border-gray-700 p-6 flex justify-between items-center">
+            <div>
+              <p className="text-sm text-gray-400">Unpaid Members</p>
+              <p className="text-3xl font-bold mt-2 text-red-400">
+                {stats.unpaid}
+              </p>
+            </div>
+            <div className="bg-red-900/30 rounded-full p-3">
+              <TrendingUp className="w-6 h-6 text-red-400" />
             </div>
           </div>
         </div>
 
         {/* Filters */}
         <div className="bg-[#1b1b1b] rounded-xl border border-gray-700 p-6 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
@@ -206,7 +200,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Members Table */}
+        {/* Members Table / Cards */}
         {filteredMembers.length === 0 ? (
           <div className="bg-[#1b1b1b] rounded-xl border border-gray-700 p-12 text-center">
             <Users className="w-16 h-16 text-gray-600 mx-auto mb-4" />
@@ -222,99 +216,169 @@ export default function DashboardPage() {
             </p>
           </div>
         ) : (
-          <div className="bg-[#1b1b1b] rounded-xl border border-gray-700 overflow-hidden">
-            <div className="hidden lg:block overflow-x-auto">
-              <table className="w-full text-gray-200">
-                <thead className="bg-[#181818] border-b border-gray-700">
-                  <tr>
-                    {[
-                      "#",
-                      "Name",
-                      "Contact",
-                      "Level",
-                      "Membership",
-                      "Group",
-                      "Social",
-                      "Payment",
-                      "Status",
-                      "Actions",
-                    ].map((header) => (
-                      <th
-                        key={header}
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
-                      >
-                        {header}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-700">
-                  {filteredMembers.map((member, index) => (
-                    <tr key={member._id} className="hover:bg-[#222]">
-                      <td className="px-6 py-4 text-sm">{index + 1}</td>
-                      <td className="px-6 py-4 font-medium">
-                        {member.firstName} {member.lastName}
-                      </td>
-                      <td className="px-6 py-4">
-                        <div>{member.email}</div>
-                        <div className="text-gray-400 text-sm">
-                          {member.phone}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <span className="bg-blue-900/40 text-blue-300 px-2 py-1 rounded-full text-xs">
-                          {member.niveau}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4">
-                        <span className="bg-purple-900/40 text-purple-300 px-2 py-1 rounded-full text-xs">
-                          {member.membership}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4">
-                        {member.groupName || (
-                          <span className="text-gray-500">N/A</span>
-                        )}
-                      </td>
-                      <td className="px-6 py-4">
-                        {member.facebook && (
-                          <a
-                            href={member.facebook}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-400 hover:text-blue-500"
-                          >
-                            <Facebook className="w-4 h-4" />
-                          </a>
-                        )}
-                      </td>
-                      <td className="px-6 py-4">{member.payNow}</td>
-                      <td className="px-6 py-4 text-center">
-                        <button
-                          onClick={() => handlePaidToggle(member._id)}
-                          className={`px-3 py-1 rounded-full text-xs font-medium ${
-                            member.paid
-                              ? "bg-green-900/40 text-green-400"
-                              : "bg-red-900/40 text-red-400"
-                          }`}
+          <>
+            {/* Desktop Table */}
+            <div className="hidden lg:block bg-[#1b1b1b] rounded-xl border border-gray-700 overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full text-gray-200">
+                  <thead className="bg-[#181818] border-b border-gray-700">
+                    <tr>
+                      {[
+                        "#",
+                        "Name",
+                        "Contact",
+                        "Level",
+                        "Membership",
+                        "Group",
+                        "Social",
+                        "Payment",
+                        "Status",
+                        "Actions",
+                      ].map((header) => (
+                        <th
+                          key={header}
+                          className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
                         >
-                          {member.paid ? "Paid" : "Unpaid"}
-                        </button>
-                      </td>
-                      <td className="px-6 py-4 text-center">
-                        <button
-                          onClick={() => handleDelete(member._id)}
-                          className="text-red-500 hover:text-red-400 p-2"
-                        >
-                          <Trash2 className="w-5 h-5" />
-                        </button>
-                      </td>
+                          {header}
+                        </th>
+                      ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-gray-700">
+                    {filteredMembers.map((member, index) => (
+                      <tr key={member._id} className="hover:bg-[#222]">
+                        <td className="px-6 py-4 text-sm">{index + 1}</td>
+                        <td className="px-6 py-4 font-medium">
+                          {member.firstName} {member.lastName}
+                        </td>
+                        <td className="px-6 py-4">
+                          <div>{member.email}</div>
+                          <div className="text-gray-400 text-sm">
+                            {member.phone}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <span className="bg-blue-900/40 text-blue-300 px-2 py-1 rounded-full text-xs">
+                            {member.niveau}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4">
+                          <span className="bg-purple-900/40 text-purple-300 px-2 py-1 rounded-full text-xs">
+                            {member.membership}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4">
+                          {member.groupName || (
+                            <span className="text-gray-500">N/A</span>
+                          )}
+                        </td>
+                        <td className="px-6 py-4">
+                          {member.facebook && (
+                            <a
+                              href={member.facebook}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-400 hover:text-blue-500"
+                            >
+                              <Facebook className="w-4 h-4" />
+                            </a>
+                          )}
+                        </td>
+                        <td className="px-6 py-4">{member.payNow}</td>
+                        <td className="px-6 py-4 text-center">
+                          <button
+                            onClick={() => handlePaidToggle(member._id)}
+                            className={`px-3 py-1 rounded-full text-xs font-medium ${
+                              member.paid
+                                ? "bg-green-900/40 text-green-400"
+                                : "bg-red-900/40 text-red-400"
+                            }`}
+                          >
+                            {member.paid ? "Paid" : "Unpaid"}
+                          </button>
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          <button
+                            onClick={() => handleDelete(member._id)}
+                            className="text-red-500 hover:text-red-400 p-2"
+                          >
+                            <Trash2 className="w-5 h-5" />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
+
+            {/* Mobile Cards */}
+            <div className="lg:hidden flex flex-col gap-4">
+              {filteredMembers.map((member, index) => (
+                <div
+                  key={member._id}
+                  className="bg-[#1b1b1b] rounded-xl border border-gray-700 p-4 flex flex-col gap-2"
+                >
+                  <div className="flex justify-between items-center">
+                    <h3 className="font-semibold text-white">
+                      {member.firstName} {member.lastName}
+                    </h3>
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        member.paid
+                          ? "bg-green-900/40 text-green-400"
+                          : "bg-red-900/40 text-red-400"
+                      }`}
+                    >
+                      {member.paid ? "Paid" : "Unpaid"}
+                    </span>
+                  </div>
+                  <div className="text-gray-400 text-sm">{member.email}</div>
+                  <div className="text-gray-400 text-sm">{member.phone}</div>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    <span className="bg-blue-900/40 text-blue-300 px-2 py-1 rounded-full text-xs">
+                      {member.niveau}
+                    </span>
+                    <span className="bg-purple-900/40 text-purple-300 px-2 py-1 rounded-full text-xs">
+                      {member.membership}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center mt-2">
+                    <div className="flex gap-2">
+                      {member.facebook && (
+                        <a
+                          href={member.facebook}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-400 hover:text-blue-500"
+                        >
+                          <Facebook className="w-4 h-4" />
+                        </a>
+                      )}
+                    </div>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => handlePaidToggle(member._id)}
+                        className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          member.paid
+                            ? "bg-green-900/40 text-green-400"
+                            : "bg-red-900/40 text-red-400"
+                        }`}
+                      >
+                        {member.paid ? "Paid" : "Unpaid"}
+                      </button>
+                      <button
+                        onClick={() => handleDelete(member._id)}
+                        className="text-red-500 hover:text-red-400 p-2"
+                      >
+                        <Trash2 className="w-5 h-5" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
 
