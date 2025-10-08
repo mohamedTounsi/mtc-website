@@ -2,7 +2,7 @@ import Link from "next/link";
 import {
   Users,
   Calendar,
-  Settings,
+  AtSign,
   TrendingUp,
   Shield,
   Bell,
@@ -27,6 +27,15 @@ export default function DashboardPage() {
       iconBg: "bg-blue-500/10",
       iconColor: "text-blue-400",
       link: "/dashboard/event-members", // added link
+    },
+    {
+      icon: AtSign,
+      title: "Email Sender",
+      description: "Send mass emails to members with a click",
+      gradient: "from-green-500 to-emerald-500",
+      iconBg: "bg-green-500/10",
+      iconColor: "text-green-400",
+      link: "/dashboard/email-sender", // added link
     },
   ];
 
