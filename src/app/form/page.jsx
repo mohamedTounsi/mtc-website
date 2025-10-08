@@ -197,6 +197,7 @@ export default function FormPage() {
                       "D-IITM",
                       "T-IITM",
                       "MASTER",
+                      "OTHER UNI",
                     ].map((n) => (
                       <label
                         key={n}
