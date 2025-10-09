@@ -1,9 +1,38 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowLeft, Calendar, MapPin, Clock } from "lucide-react";
 
+// Helper Components (must be defined before use)
+const InputField = ({ label, name, type = "text", value, onChange }) => (
+  <div>
+    <label className="block text-sm font-semibold text-gray-700 mb-2">
+      {label} *
+    </label>
+    <input
+      type={type}
+      name={name}
+      placeholder={label}
+      value={value}
+      onChange={onChange}
+      className="w-full text-gray-900 px-4 py-3 border-2 border-gray-300 bg-white rounded-lg focus:border-purple-600 focus:outline-none transition-colors"
+      required
+    />
+  </div>
+);
+
+const HighlightCard = ({ emoji, title, desc }) => (
+  <div className="text-center p-6 bg-purple-50 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+    <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+      {emoji}
+    </div>
+    <h4 className="font-semibold text-gray-900 mb-2">{title}</h4>
+    <p className="text-sm text-gray-600">{desc}</p>
+  </div>
+);
+
 export default function EventFormPage() {
+  const [featuredEvent, setFeaturedEvent] = useState(null);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -12,6 +41,50 @@ export default function EventFormPage() {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [countdown, setCountdown] = useState("");
+
+  // Fetch featured event from API
+  useEffect(() => {
+    const fetchFeaturedEvent = async () => {
+      try {
+        const res = await fetch("/api/featuredevent");
+        const data = await res.json();
+        if (data) setFeaturedEvent(data);
+      } catch (err) {
+        console.error("Failed to fetch event:", err);
+      }
+    };
+
+    fetchFeaturedEvent();
+  }, []);
+
+  // Countdown Timer
+  useEffect(() => {
+    if (!featuredEvent?.eventTime) return;
+
+    const interval = setInterval(() => {
+      const eventDate = new Date(featuredEvent.eventTime).getTime();
+      const now = new Date().getTime();
+      const distance = eventDate - now;
+
+      if (distance < 0) {
+        setCountdown("Event has started!");
+        clearInterval(interval);
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      setCountdown(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [featuredEvent]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -22,19 +95,16 @@ export default function EventFormPage() {
     setIsLoading(true);
 
     try {
-      // Send data to your backend API
+      const payload = { ...formData, eventId: featuredEvent?._id };
       const res = await fetch("/api/eventform", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       if (!res.ok) throw new Error("Failed to register");
 
-      // Clear form immediately
       setFormData({ firstName: "", lastName: "", email: "", phone: "" });
-
-      // Show toast
       setIsSubmitted(true);
       setTimeout(() => setIsSubmitted(false), 3000);
     } catch (err) {
@@ -68,168 +138,136 @@ export default function EventFormPage() {
       </button>
 
       <div className="container mx-auto px-4 py-12 pt-20">
-        <div className="max-w-5xl mx-auto">
-          {/* Event Header */}
-          <div className="bg-gradient-to-r from-purple-600 to-purple-800 rounded-t-2xl overflow-hidden shadow-2xl">
-            <div className="relative h-64 bg-black">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-600/30 to-transparent"></div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center">
-                  <h1 className=" text-4xl md:text-5xl font-bold text-white mb-2 drop-shadow-lg">
-                    Twin Tech Talk
-                  </h1>
-                  <p className="text-purple-200 text-sm md:text-lg">
-                    Press Start To AI
-                  </p>
+        <div className="max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-2xl bg-gray-900/20 backdrop-blur-md">
+          {/* Hero Section */}
+          <div className="relative h-80 md:h-96 bg-black">
+            <img
+              src={featuredEvent?.image || "/placeholder-event.jpg"}
+              alt="Event"
+              className="w-full h-full object-cover brightness-75"
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-700/60 to-transparent"></div>
+            <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-6">
+              <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg mb-2">
+                {featuredEvent?.title || "Loading..."}
+              </h1>
+              <p className="text-purple-200 text-sm md:text-lg mb-4">
+                {featuredEvent?.description || ""}
+              </p>
+              {countdown && (
+                <div className="bg-purple-800/70 px-4 py-2 rounded-full text-white font-semibold text-lg shadow-lg">
+                  ⏳ {countdown}
                 </div>
-              </div>
+              )}
             </div>
+          </div>
 
-            {/* Event Details Bar */}
-            <div className="bg-white/10 backdrop-blur-sm border-t border-white/20">
-              <div className="flex flex-wrap justify-center gap-6 py-4 px-6 text-white">
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-5 h-5 text-purple-300" />
-                  <span className="font-medium">Oct 8, 2025</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="w-5 h-5 text-purple-300" />
-                  <span className="font-medium">15:00 PM</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <MapPin className="w-5 h-5 text-purple-300" />
-                  <span className="font-medium">SC2 ISIMS</span>
-                </div>
-              </div>
+          {/* Event Details Bar */}
+          <div className="bg-white/10 backdrop-blur-sm border-t border-white/20 flex flex-wrap justify-center gap-6 py-4 px-6 text-white">
+            <div className="flex items-center gap-2">
+              <Calendar className="w-5 h-5 text-purple-300" />
+              <span className="font-medium">
+                {featuredEvent
+                  ? new Date(featuredEvent.eventTime).toLocaleDateString([], {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })
+                  : ""}
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Clock className="w-5 h-5 text-purple-300" />
+              <span className="font-medium">
+                {featuredEvent
+                  ? new Date(featuredEvent.eventTime).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })
+                  : ""}
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <MapPin className="w-5 h-5 text-purple-300" />
+              <span className="font-medium">
+                {featuredEvent?.location || ""}
+              </span>
             </div>
           </div>
 
           {/* Form Section */}
-          <div className="bg-white/90 rounded-b-2xl shadow-2xl p-8 md:p-12">
+          <div className="bg-white p-8 md:p-12">
             <div className="mb-8">
               <h2 className="text-3xl font-bold text-gray-900 mb-2">
                 Register Now
               </h2>
               <p className="text-gray-600">
-                Secure your spot at the most anticipated tech event of the year
+                Secure your spot at this exciting event!
               </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    First Name *
-                  </label>
-                  <input
-                    type="text"
-                    name="firstName"
-                    placeholder="First Name"
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    className="w-full text-black bg-white/10 px-4 py-3 border-2 border-gray-500 rounded-lg focus:border-purple-600 focus:outline-none transition-colors"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Last Name *
-                  </label>
-                  <input
-                    type="text"
-                    name="lastName"
-                    placeholder="Last Name"
-                    value={formData.lastName}
-                    onChange={handleChange}
-                    className="w-full text-black px-4 py-3 border-2 border-gray-500 bg-white/10 rounded-lg focus:border-purple-600 focus:outline-none transition-colors"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Email Address *
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="john.doe@example.com"
-                  value={formData.email}
+                <InputField
+                  label="First Name"
+                  name="firstName"
+                  value={formData.firstName}
                   onChange={handleChange}
-                  className="w-full text-black px-4 py-3 border-2 border-gray-500 bg-white/10 rounded-lg focus:border-purple-600 focus:outline-none transition-colors"
-                  required
+                />
+                <InputField
+                  label="Last Name"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Phone Number *
-                </label>
-                <input
-                  type="tel"
-                  name="phone"
-                  placeholder="Phone Number"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="w-full text-black px-4 py-3 border-2 border-gray-500 bg-white/10 rounded-lg focus:border-purple-600 focus:outline-none transition-colors"
-                  required
-                />
-              </div>
+              <InputField
+                label="Email Address"
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+              />
+
+              <InputField
+                label="Phone Number"
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+              />
 
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full  bg-gradient-to-r from-purple-600 to-purple-800 text-white py-4 rounded-lg font-bold text-lg hover:from-purple-700 hover:to-purple-900 transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                className="w-full bg-gradient-to-r from-purple-600 to-purple-800 text-white py-4 rounded-lg font-bold text-lg hover:from-purple-700 hover:to-purple-900 transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
               >
                 {isLoading ? "Submitting..." : "Complete Registration"}
               </button>
-
-              <p className="text-sm text-gray-500 text-center">
-                By registering, you agree to receive event updates and
-                communications
-              </p>
             </form>
 
             {/* Event Highlights */}
-            <div className="mt-12 pt-8 border-t border-gray-500 bg-white/10">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">
+            <div className="mt-12 pt-12 border-t border-gray-300">
+              <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
                 What to Expect
               </h3>
-              <div className="grid md:grid-cols-3 gap-6">
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <span className="text-2xl">🎤</span>
-                  </div>
-                  <h4 className="font-semibold text-gray-900 mb-1">
-                    Keynote Speakers
-                  </h4>
-                  <p className="text-sm text-gray-600">
-                    Industry leaders sharing insights
-                  </p>
-                </div>
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <span className="text-2xl">🤝</span>
-                  </div>
-                  <h4 className="font-semibold text-gray-900 mb-1">
-                    Networking
-                  </h4>
-                  <p className="text-sm text-gray-600">
-                    Connect with professionals
-                  </p>
-                </div>
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <span className="text-2xl">💬</span>
-                  </div>
-                  <h4 className="font-semibold text-gray-900 mb-1">
-                    Q&A Panels
-                  </h4>
-                  <p className="text-sm text-gray-600">
-                    Ask experts anything about AI and innovation
-                  </p>
-                </div>
+              <div className="grid md:grid-cols-3 gap-8">
+                <HighlightCard
+                  emoji="🎤"
+                  title="Keynote Speakers"
+                  desc="Industry leaders sharing insights"
+                />
+                <HighlightCard
+                  emoji="🤝"
+                  title="Networking"
+                  desc="Connect with professionals"
+                />
+                <HighlightCard
+                  emoji="💬"
+                  title="Q&A Panels"
+                  desc="Ask experts anything about AI and innovation"
+                />
               </div>
             </div>
           </div>

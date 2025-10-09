@@ -6,6 +6,7 @@ import {
   TrendingUp,
   Shield,
   Bell,
+  Star,
 } from "lucide-react";
 
 export default function DashboardPage() {
@@ -36,6 +37,15 @@ export default function DashboardPage() {
       iconBg: "bg-green-500/10",
       iconColor: "text-green-400",
       link: "/dashboard/email-sender", // added link
+    },
+    {
+      icon: Star,
+      title: "Featured Event",
+      description: "Manage the featured event",
+      gradient: "from-yellow-500 to-orange-500",
+      iconBg: "bg-yellow-500/10",
+      iconColor: "text-yellow-400",
+      link: "/dashboard/featured-event",
     },
   ];
 
