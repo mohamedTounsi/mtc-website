@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Calendar,
@@ -13,11 +12,9 @@ import {
   Terminal,
   Rocket,
   Sparkles,
-  Users,
   Tag,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import FeaturedMarquee from "../components/FeaturedMarquee";
 import ModernMarquee from "../components/ModernMarquee";
 
 export default function Events() {
@@ -34,10 +31,25 @@ export default function Events() {
     seconds: 0,
   });
 
-  const [selectedCategory, setSelectedCategory] = useState("all");
   const [featuredEvent, setFeaturedEvent] = useState(null);
+  const [recentEvents, setRecentEvents] = useState([]);
   const [activeFilter, setActiveFilter] = useState("all");
 
+  // Fetch featured event
+  useEffect(() => {
+    const fetchFeaturedEvent = async () => {
+      try {
+        const res = await fetch("/api/featuredevent");
+        const data = await res.json();
+        if (data) setFeaturedEvent(data);
+      } catch (error) {
+        console.error("Failed to fetch featured event:", error);
+      }
+    };
+    fetchFeaturedEvent();
+  }, []);
+
+  // Countdown for featured event
   useEffect(() => {
     if (!featuredEvent?.eventTime) return;
 
@@ -64,21 +76,23 @@ export default function Events() {
     return () => clearInterval(timer);
   }, [featuredEvent]);
 
-  // Fetch featured event from API
+  // Fetch the 6 latest recent events
   useEffect(() => {
-    const fetchFeaturedEvent = async () => {
+    const fetchRecentEvents = async () => {
       try {
-        const res = await fetch("/api/featuredevent");
-        const data = await res.json();
-        if (data) setFeaturedEvent(data);
+        const res = await fetch("/api/recentevent");
+        let data = await res.json();
+        if (Array.isArray(data)) {
+          setRecentEvents(data.slice(0, 6));
+        }
       } catch (error) {
-        console.error("Failed to fetch featured event:", error);
+        console.error("Failed to fetch recent events:", error);
       }
     };
-    fetchFeaturedEvent();
+    fetchRecentEvents();
   }, []);
 
-  // Categories with enhanced data
+  // Categories
   const categories = [
     {
       id: "all",
@@ -106,59 +120,11 @@ export default function Events() {
     },
   ];
 
-  // Enhanced upcoming events with more data
-  const upcomingEvents = [
-    {
-      id: 2,
-      title: "404: CAREER NOT FOUND",
-      category: "workshop",
-      date: "October 1, 2025",
-      time: "2:00 PM - 5:00 PM",
-      location: "SI 1 ISIMS",
-      image: "/event1.jpg",
-      tags: ["Career", "Development", "Guidance"],
-      description:
-        "An interactive session that guided participants in discovering their ideal career paths, exploring strengths, interests, and opportunities to make informed career choices.",
-      attendees: 120,
-      duration: "3 hours",
-      difficulty: "Beginner",
-    },
-    {
-      id: 3,
-      title: "DX V1.0",
-      category: "hackathon",
-      date: "December 21-22, 2024",
-      time: "9:00 AM - 6:00 PM",
-      location: "IIT Sfax",
-      image: "/dxlogo.jpg",
-      tags: ["Hackathon", "Industry 4.0", "Innovation"],
-      description:
-        "DX v1.0 was an innovative two-day hackathon dedicated to exploring the future of Industry 4.0 — the fusion of digital technologies with industrial systems.",
-      attendees: 250,
-      duration: "2 days",
-      difficulty: "Advanced",
-    },
-    {
-      id: 4,
-      title: "React-Native Bootcamp",
-      category: "bootcamp",
-      date: "March 2, 8, 9 2025",
-      time: "10:00 AM - 4:00 PM",
-      location: "Olivium Club",
-      image: "/reactnative.jpg",
-      tags: ["React-Native", "Mobile", "Development"],
-      description:
-        "An intensive hands-on program where participants learned to build mobile apps using React Native, covering fundamentals, components, and real-world project development.",
-      attendees: 80,
-      duration: "3 days",
-      difficulty: "Intermediate",
-    },
-  ];
-
+  // Filtering for grid
   const filteredEvents =
     activeFilter === "all"
-      ? upcomingEvents
-      : upcomingEvents.filter((event) => event.category === activeFilter);
+      ? recentEvents
+      : recentEvents.filter((event) => event.category === activeFilter);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900/20 via-purple-900/20 to-violet-900/20 overflow-hidden">
@@ -197,7 +163,6 @@ export default function Events() {
                 transition={{ duration: 0.7 }}
                 className="relative bg-gradient-to-br from-gray-800/50 to-purple-900/30 backdrop-blur-xl rounded-3xl border border-white/10 shadow-2xl overflow-hidden"
               >
-                {/* Background Pattern */}
                 <div className="absolute inset-0 opacity-10">
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent rotate-45" />
                 </div>
@@ -216,17 +181,13 @@ export default function Events() {
                         {featuredEvent.description}
                       </p>
                     </div>
-
-                    {/* Event Details */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                       <div className="flex items-center space-x-3 p-3 bg-white/5 rounded-xl border border-white/10">
                         <Calendar className="w-5 h-5 text-purple-400" />
                         <div>
                           <p className="text-sm text-gray-400">Date</p>
                           <p className="text-white font-semibold">
-                            {new Date(
-                              featuredEvent.eventTime
-                            ).toLocaleDateString()}
+                            {new Date(featuredEvent.eventTime).toLocaleDateString()}
                           </p>
                         </div>
                       </div>
@@ -269,7 +230,6 @@ export default function Events() {
                       </div>
                     </div>
 
-                    {/* CTA Button */}
                     <motion.button
                       onClick={handleClick}
                       whileHover={{ scale: 1.02 }}
@@ -354,7 +314,7 @@ export default function Events() {
               <AnimatePresence>
                 {filteredEvents.map((event, index) => (
                   <motion.div
-                    key={event.id}
+                    key={event._id || event.id}
                     layout
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -386,7 +346,8 @@ export default function Events() {
                               : "bg-purple-500/80"
                           }`}
                         >
-                          {event.category}
+                          {event.category.charAt(0).toUpperCase() + event.category.slice(1)}
+
                         </span>
                       </div>
                     </div>
@@ -417,15 +378,16 @@ export default function Events() {
 
                       {/* Tags */}
                       <div className="flex flex-wrap gap-2 mb-4">
-                        {event.tags.map((tag, tagIndex) => (
-                          <span
-                            key={tagIndex}
-                            className="inline-flex items-center space-x-1 px-2 py-1 bg-white/5 rounded-lg text-xs text-gray-300 border border-white/10"
-                          >
-                            <Tag className="w-3 h-3" />
-                            <span>{tag}</span>
-                          </span>
-                        ))}
+                        {event.tags &&
+                          event.tags.map((tag, tagIndex) => (
+                            <span
+                              key={tagIndex}
+                              className="inline-flex items-center space-x-1 px-2 py-1 bg-white/5 rounded-lg text-xs text-gray-300 border border-white/10"
+                            >
+                              <Tag className="w-3 h-3" />
+                              <span>{tag}</span>
+                            </span>
+                          ))}
                       </div>
 
                       {/* Action Button */}
@@ -434,19 +396,21 @@ export default function Events() {
                         whileTap={{ scale: 0.98 }}
                         onClick={() =>
                           setExpandedEvent(
-                            expandedEvent === event.id ? null : event.id
+                            expandedEvent === (event._id || event.id)
+                              ? null
+                              : event._id || event.id
                           )
                         }
                         className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 text-sm"
                       >
-                        {expandedEvent === event.id
+                        {expandedEvent === (event._id || event.id)
                           ? "Show Less"
                           : "Learn More"}
                       </motion.button>
 
                       {/* Expanded Details */}
                       <AnimatePresence>
-                        {expandedEvent === event.id && (
+                        {expandedEvent === (event._id || event.id) && (
                           <motion.div
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: "auto" }}
@@ -467,7 +431,8 @@ export default function Events() {
                                   <strong>Attendees:</strong> {event.attendees}
                                 </div>
                                 <div>
-                                  <strong>Type:</strong> {event.category}
+                                  <strong>Type:</strong> {event.category.charAt(0).toUpperCase() + event.category.slice(1)}
+
                                 </div>
                               </div>
                             </div>

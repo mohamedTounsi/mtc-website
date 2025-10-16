@@ -7,6 +7,7 @@ import {
   Shield,
   Bell,
   Star,
+  Presentation,
 } from "lucide-react";
 
 export default function DashboardPage() {
@@ -46,6 +47,15 @@ export default function DashboardPage() {
       iconBg: "bg-yellow-500/10",
       iconColor: "text-yellow-400",
       link: "/dashboard/featured-event",
+    },
+    {
+      icon: Presentation,
+      title: "Recent Events",
+      description: "Manage the recent Events",
+      gradient: "from-red-500 to-crimson-500",
+      iconBg: "bg-red-500/10",
+      iconColor: "text-red-400",
+      link: "/dashboard/recentEvents",
     },
   ];
 
