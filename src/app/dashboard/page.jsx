@@ -52,7 +52,7 @@ export default function DashboardPage() {
       icon: Presentation,
       title: "Recent Events",
       description: "Manage the recent Events",
-      gradient: "from-red-500 to-crimson-500",
+      gradient: "from-red-500 to-rose-500",
       iconBg: "bg-red-500/10",
       iconColor: "text-red-400",
       link: "/dashboard/recentEvents",

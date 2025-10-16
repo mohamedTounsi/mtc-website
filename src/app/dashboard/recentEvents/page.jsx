@@ -77,7 +77,7 @@ export default function RecentEventsDashboard() {
               <div className="flex gap-2">
                 <Link
                   href={`/dashboard/recentEvents/form?id=${event._id}`}
-                  className="flex items-center gap-1 bg-yellow-500 hover:bg-yellow-600 px-3 py-1 rounded"
+                  className="flex items-center gap-1 bg-indigo-500 hover:bg-indigo-600 px-3 py-1 rounded"
                 >
                   <Edit size={16}/> Edit
                 </Link>
