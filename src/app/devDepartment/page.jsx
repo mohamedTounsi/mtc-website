@@ -9,7 +9,7 @@ export default function DepartmentPage() {
     {
       name: "Mohamed Yassin Ghorbel",
       role: "Manager",
-      image: "/ghorbel.jpeg",
+      image: "/ghorbel.png",
       linktree: "https://linktr.ee/ysn.ghrbl",
       gradient: "from-blue-600 to-cyan-600",
     },
