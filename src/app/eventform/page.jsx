@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { ArrowLeft, Calendar, MapPin, Clock } from "lucide-react";
 
-// Helper Components (must be defined before use)
+// Helper Components
 const InputField = ({ label, name, type = "text", value, onChange }) => (
   <div>
     <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -42,21 +43,28 @@ export default function EventFormPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [countdown, setCountdown] = useState("");
+  const router = useRouter();
 
-  // Fetch featured event from API
+  // Fetch featured event from API with redirect logic
   useEffect(() => {
     const fetchFeaturedEvent = async () => {
       try {
         const res = await fetch("/api/featuredevent");
+        if (!res.ok) throw new Error("Network response was not ok");
         const data = await res.json();
-        if (data) setFeaturedEvent(data);
+        if (data && Object.keys(data).length > 0) {
+          setFeaturedEvent(data);
+        } else {
+          router.replace("/404");
+        }
       } catch (err) {
         console.error("Failed to fetch event:", err);
+        router.replace("/404");
       }
     };
 
     fetchFeaturedEvent();
-  }, []);
+  }, [router]);
 
   // Countdown Timer
   useEffect(() => {
