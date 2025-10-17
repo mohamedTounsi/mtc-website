@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Loader2, Users } from "lucide-react";
+import { Loader2, Users, Download,Trash2 } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function EventMembersPage() {
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     const fetchMembers = async () => {
@@ -23,6 +24,33 @@ export default function EventMembersPage() {
     fetchMembers();
   }, []);
 
+  const handleExport = () => {
+    window.open("/api/export-event-members", "_blank");
+  };
+
+  const handleDelete = async () => {
+    if (!window.confirm("Are you sure you want to delete ALL event members? This action cannot be undone.")) {
+      return;
+    }
+    setDeleting(true);
+    try {
+      const res = await fetch("/api/delete-event-members", {
+        method: "DELETE",
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        alert(`Success: ${data.deletedCount} event members deleted.`);
+        setMembers([]); // clear list on success
+      } else {
+        alert(`Error: ${data.error || "Failed to delete event members."}`);
+      }
+    } catch (error) {
+      alert("An error occurred while deleting event members.");
+    }
+    setDeleting(false);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -38,6 +66,21 @@ export default function EventMembersPage() {
         <h1 className="text-2xl font-semibold bg-gradient-to-r from-purple-400 to-fuchsia-500 bg-clip-text text-transparent">
           Event Members
         </h1>
+        <button
+          onClick={handleExport}
+          className="inline-flex items-center px-4 py-2 border border-gray-600 rounded-lg text-sm font-medium text-gray-300 bg-[#222] hover:bg-[#2a2a2a] transition-colors"
+        >
+          <Download className="w-4 h-4 mr-2" />
+          Export Data
+        </button>
+        <button
+          onClick={handleDelete}
+          disabled={deleting}
+          className="inline-flex items-center px-4 py-2 border border-gray-600 rounded-lg text-sm font-medium text-gray-300 bg-red-600 hover:bg-red-700 transition-colors"
+        >
+          {deleting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Trash2 className="w-4 h-4 mr-2" />}
+          Reset Event Members
+        </button>
       </div>
 
       {/* Loading State */}
@@ -56,24 +99,12 @@ export default function EventMembersPage() {
             <table className="min-w-full border-collapse text-sm md:text-base">
               <thead>
                 <tr className="bg-gradient-to-r from-purple-900/40 to-fuchsia-900/40 border-b border-purple-800/60">
-                  <th className="px-6 py-4 text-left font-semibold text-gray-200">
-                    #
-                  </th>
-                  <th className="px-6 py-4 text-left font-semibold text-gray-200">
-                    First Name
-                  </th>
-                  <th className="px-6 py-4 text-left font-semibold text-gray-200">
-                    Last Name
-                  </th>
-                  <th className="px-6 py-4 text-left font-semibold text-gray-200">
-                    Email
-                  </th>
-                  <th className="px-6 py-4 text-left font-semibold text-gray-200">
-                    Phone
-                  </th>
-                  <th className="px-6 py-4 text-left font-semibold text-gray-200">
-                    Date
-                  </th>
+                  <th className="px-6 py-4 text-left font-semibold text-gray-200">#</th>
+                  <th className="px-6 py-4 text-left font-semibold text-gray-200">First Name</th>
+                  <th className="px-6 py-4 text-left font-semibold text-gray-200">Last Name</th>
+                  <th className="px-6 py-4 text-left font-semibold text-gray-200">Email</th>
+                  <th className="px-6 py-4 text-left font-semibold text-gray-200">Phone</th>
+                  <th className="px-6 py-4 text-left font-semibold text-gray-200">Date</th>
                 </tr>
               </thead>
               <tbody>
@@ -86,12 +117,8 @@ export default function EventMembersPage() {
                     className="border-b border-purple-800/40 hover:bg-purple-900/30 hover:shadow-md hover:shadow-fuchsia-800/10 transition-all duration-200"
                   >
                     <td className="px-6 py-4 text-gray-400">{index + 1}</td>
-                    <td className="px-6 py-4 font-medium text-gray-100">
-                      {member.firstName}
-                    </td>
-                    <td className="px-6 py-4 text-gray-200">
-                      {member.lastName}
-                    </td>
+                    <td className="px-6 py-4 font-medium text-gray-100">{member.firstName}</td>
+                    <td className="px-6 py-4 text-gray-200">{member.lastName}</td>
                     <td className="px-6 py-4 text-gray-400">{member.email}</td>
                     <td className="px-6 py-4 text-gray-400">{member.phone}</td>
                     <td className="px-6 py-4 text-gray-400">
@@ -118,9 +145,7 @@ export default function EventMembersPage() {
                 className="bg-gradient-to-b from-[#131318] to-[#0d0d10] rounded-2xl border border-purple-800/50 shadow-lg shadow-purple-900/30 p-4 flex flex-col gap-2"
               >
                 <div className="flex justify-between items-center">
-                  <h3 className="font-semibold text-white">
-                    {member.firstName} {member.lastName}
-                  </h3>
+                  <h3 className="font-semibold text-white">{member.firstName} {member.lastName}</h3>
                   <span className="text-gray-400 text-sm">
                     {new Date(member.createdAt).toLocaleDateString("en-GB", {
                       day: "2-digit",
