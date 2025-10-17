@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Loader2, Users, Download,Trash2 } from "lucide-react";
+import { Loader2, Users, Download, Trash2 } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function EventMembersPage() {
@@ -59,29 +59,37 @@ export default function EventMembersPage() {
       className="text-white"
     >
       {/* Header */}
-      <div className="flex items-center gap-3 mb-10">
-        <div className="p-2 rounded-lg bg-gradient-to-tr from-purple-500 to-fuchsia-600 shadow-md shadow-fuchsia-800/40">
+      <div className="flex flex-col md:flex-row md:items-center gap-y-3 gap-x-4 mb-10 flex-wrap">
+        <div className="hidden p-2 md:flex-wrap rounded-lg bg-gradient-to-tr from-purple-500 to-fuchsia-600 shadow-md shadow-fuchsia-800/40 flex-shrink-0 md:flex items-center">
           <Users className="w-6 h-6 text-white" />
         </div>
-        <h1 className="text-2xl font-semibold bg-gradient-to-r from-purple-400 to-fuchsia-500 bg-clip-text text-transparent">
+        <h1 className="text-2xl font-semibold bg-gradient-to-r from-purple-400 to-fuchsia-500 bg-clip-text text-transparent flex-1">
+          
           Event Members
         </h1>
-        <button
-          onClick={handleExport}
-          className="inline-flex items-center px-4 py-2 border border-gray-600 rounded-lg text-sm font-medium text-gray-300 bg-[#222] hover:bg-[#2a2a2a] transition-colors"
-        >
-          <Download className="w-4 h-4 mr-2" />
-          Export Data
-        </button>
-        <button
-          onClick={handleDelete}
-          disabled={deleting}
-          className="inline-flex items-center px-4 py-2 border border-gray-600 rounded-lg text-sm font-medium text-gray-300 bg-red-600 hover:bg-red-700 transition-colors"
-        >
-          {deleting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Trash2 className="w-4 h-4 mr-2" />}
-          Reset Event Members
-        </button>
+        <div className="flex flex-col sm:flex-row gap-2">
+          <button
+            onClick={handleExport}
+            className="inline-flex items-center justify-center px-4 py-2 border border-gray-600 rounded-lg text-sm font-medium text-gray-300 bg-[#222] hover:bg-[#2a2a2a] transition-colors w-full sm:w-auto"
+          >
+            <Download className="w-4 h-4 mr-2" />
+            Export Data
+          </button>
+          <button
+            onClick={handleDelete}
+            disabled={deleting}
+            className="inline-flex items-center justify-center px-4 py-2 border border-gray-600 rounded-lg text-sm font-medium text-gray-300 bg-red-600 hover:bg-red-700 transition-colors w-full sm:w-auto"
+          >
+            {deleting ? (
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            ) : (
+              <Trash2 className="w-4 h-4 mr-2" />
+            )}
+            Reset Event Members
+          </button>
+        </div>
       </div>
+
 
       {/* Loading State */}
       {loading ? (
