@@ -132,7 +132,13 @@ export default function FeaturedEventDashboard() {
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-gray-400 mb-1">Date</p>
                     <p className="text-sm font-medium text-white truncate">
-                      {featuredEvent.date}
+                      {featuredEvent
+                  ? new Date(featuredEvent.eventTime).toLocaleDateString([], {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })
+                  : ""}
                     </p>
                   </div>
                 </div>
@@ -149,6 +155,7 @@ export default function FeaturedEventDashboard() {
                         {
                           hour: "2-digit",
                           minute: "2-digit",
+                          timeZone: "UTC",
                         }
                       )}
                     </p>

@@ -54,6 +54,7 @@ export default function EventFormPage() {
         const data = await res.json();
         if (data && Object.keys(data).length > 0) {
           setFeaturedEvent(data);
+          
         } else {
           router.replace("/404");
         }
@@ -193,6 +194,7 @@ export default function EventFormPage() {
                   ? new Date(featuredEvent.eventTime).toLocaleTimeString([], {
                       hour: "2-digit",
                       minute: "2-digit",
+                      timeZone: "UTC",
                     })
                   : ""}
               </span>
