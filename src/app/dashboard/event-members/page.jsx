@@ -29,27 +29,30 @@ export default function EventMembersPage() {
   };
 
   const handleDelete = async () => {
-    if (!window.confirm("Are you sure you want to delete ALL event members? This action cannot be undone.")) {
-      return;
-    }
-    setDeleting(true);
-    try {
-      const res = await fetch("/api/delete-event-members", {
-        method: "DELETE",
-      });
-      const data = await res.json();
+  if (!window.confirm("Are you sure you want to delete ALL event members? This action cannot be undone.")) {
+    return;
+  }
+  setDeleting(true);
+  try {
+    const res = await fetch("/api/delete-event-members", {
+      method: "DELETE",
+    });
+    const data = await res.json();
 
-      if (res.ok) {
-        alert(`Success: ${data.deletedCount} event members deleted.`);
-        setMembers([]); // clear list on success
-      } else {
-        alert(`Error: ${data.error || "Failed to delete event members."}`);
-      }
-    } catch (error) {
-      alert("An error occurred while deleting event members.");
+    if (res.ok) {
+      alert(`Success: ${data.deletedCount} event members deleted.`);
+      setMembers([]); // clear list on success
+    } else {
+      alert(`Error: ${data.error || "Failed to delete event members."}`);
     }
+  } catch (error) {
+    console.error(error);
+    alert("An error occurred while deleting event members.");
+  } finally {
     setDeleting(false);
-  };
+  }
+};
+
 
   return (
     <motion.div
