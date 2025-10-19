@@ -66,6 +66,8 @@ export default function EventFormPage() {
     fetchFeaturedEvent();
   }, [router]);
 
+
+
   // Countdown Timer
   useEffect(() => {
     if (!featuredEvent?.eventTime) return;
@@ -253,6 +255,9 @@ export default function EventFormPage() {
               >
                 {isLoading ? "Submitting..." : "Complete Registration"}
               </button>
+              <h5 className="text-md text-gray-900 mb-6 text-center">
+                💻 <span className="font-bold">Note:</span> A personal computer is <span className="font-bold text-red-600">required</span> for this workshop.
+              </h5>
             </form>
 
             {/* Event Highlights */}
