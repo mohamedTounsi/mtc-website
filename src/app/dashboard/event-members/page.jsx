@@ -9,6 +9,37 @@ export default function EventMembersPage() {
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
 
+
+const handleStatusToggle = async (eventId, currentStatus) => {
+  try {
+    const response = await fetch(`/api/eventform/${eventId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ Status: !currentStatus }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to toggle status');
+    }
+
+    const updatedEvent = await response.json();
+
+    // Add this block to dynamically update the view
+    setMembers((prev) =>
+      prev.map((m) =>
+        m._id === eventId ? { ...m, Status: updatedEvent.Status } : m
+      )
+    );
+
+    return updatedEvent;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+
+
   useEffect(() => {
     const fetchMembers = async () => {
       try {
@@ -116,6 +147,7 @@ export default function EventMembersPage() {
                   <th className="px-6 py-4 text-left font-semibold text-gray-200">Email</th>
                   <th className="px-6 py-4 text-left font-semibold text-gray-200">Phone</th>
                   <th className="px-6 py-4 text-left font-semibold text-gray-200">Date</th>
+                  <th className="px-6 py-4 text-left font-semibold text-gray-200">Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -139,6 +171,18 @@ export default function EventMembersPage() {
                         year: "numeric",
                       })}
                     </td>
+                    <td className="px-6 py-4 text-gray-400">
+                          <button
+                            onClick={() => handleStatusToggle(member._id,member.Status)}
+                            className={`px-3 py-1 rounded-full text-xs font-medium ${
+                              member.Status
+                                ? "bg-green-900/40 text-green-400"
+                                : "bg-red-900/40 text-red-400"
+                            }`}
+                          >
+                            {member.Status ? "Present" : "Absent"}
+                          </button>
+                        </td>
                   </motion.tr>
                 ))}
               </tbody>
@@ -166,7 +210,21 @@ export default function EventMembersPage() {
                   </span>
                 </div>
                 <div className="text-gray-400 text-sm">{member.email}</div>
+                <div className="flex justify-between items-center">
                 <div className="text-gray-400 text-sm">{member.phone}</div>
+                <div className="text-gray-400 text-sm">
+                  <button
+                            onClick={() => handleStatusToggle(member._id,member.Status)}
+                            className={`px-3 py-1 rounded-full text-xs font-medium ${
+                              member.Status
+                                ? "bg-green-900/40 text-green-400"
+                                : "bg-red-900/40 text-red-400"
+                            }`}
+                          >
+                            {member.Status ? "Present" : "Absent"}
+                          </button>
+                </div>
+                </div>
               </motion.div>
             ))}
           </div>

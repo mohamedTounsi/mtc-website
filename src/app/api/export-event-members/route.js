@@ -13,11 +13,13 @@ export async function GET() {
 
     // Prepare data for Excel
     const data = members.map(member => ({
-      "First Name": member.firstName,
-      "Last Name": member.lastName,
-      "Email": member.email,
-      "Phone": member.phone
-    }));
+  "First Name": member.firstName,
+  "Last Name": member.lastName,
+  "Email": member.email,
+  "Phone": member.phone,
+  "Status": member.Status ? "Present" : "Absent"
+}));
+
 
     // Create workbook and sheet
     const workbook = XLSX.utils.book_new();

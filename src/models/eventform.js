@@ -5,6 +5,7 @@ const EventFormSchema = new mongoose.Schema({
   lastName: { type: String, required: true },
   email: { type: String, required: true },
   phone: { type: String, required: true },
+  Status: { type: Boolean, default: false },
 }, { timestamps: true });
 
 // Prevent recompilation in dev
