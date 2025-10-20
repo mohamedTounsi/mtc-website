@@ -13,3 +13,15 @@ export async function PATCH(req, { params }) {
     return new Response("Failed to update EventForm", { status: 500 });
   }
 }
+
+export async function DELETE(req, { params }) {
+  const { id } = params;
+  try {
+    await connectDB();
+    await EventForm.findByIdAndDelete(id);
+    return new Response("Deleted successfully", { status: 200 });
+  } catch (err) {
+    console.error(err);
+    return new Response("Failed to delete member", { status: 500 });
+  }
+}

@@ -10,6 +10,20 @@ export default function EventMembersPage() {
   const [deleting, setDeleting] = useState(false);
 
 
+  const handleDelete = async (id) => {
+    if (!confirm("Are you sure you want to delete this member?")) return;
+
+    try {
+      const res = await fetch(`/api/eventform/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Failed to delete member");
+
+      setMembers((prev) => prev.filter((m) => m._id !== id));
+    } catch (err) {
+      console.error("Failed to delete member:", err);
+    }
+  };
+
+
 const handleStatusToggle = async (eventId, currentStatus) => {
   try {
     const response = await fetch(`/api/eventform/${eventId}`, {
@@ -59,7 +73,7 @@ const handleStatusToggle = async (eventId, currentStatus) => {
     window.open("/api/export-event-members", "_blank");
   };
 
-  const handleDelete = async () => {
+  const handleReset = async () => {
   if (!window.confirm("Are you sure you want to delete ALL event members? This action cannot be undone.")) {
     return;
   }
@@ -110,7 +124,7 @@ const handleStatusToggle = async (eventId, currentStatus) => {
             Export Data
           </button>
           <button
-            onClick={handleDelete}
+            onClick={handleReset}
             disabled={deleting}
             className="inline-flex items-center justify-center px-4 py-2 border border-gray-600 rounded-lg text-sm font-medium text-gray-300 bg-red-600 hover:bg-red-700 transition-colors w-full sm:w-auto"
           >
@@ -148,6 +162,7 @@ const handleStatusToggle = async (eventId, currentStatus) => {
                   <th className="px-6 py-4 text-left font-semibold text-gray-200">Phone</th>
                   <th className="px-6 py-4 text-left font-semibold text-gray-200">Date</th>
                   <th className="px-6 py-4 text-left font-semibold text-gray-200">Status</th>
+                  <th className="px-6 py-4 text-left font-semibold text-gray-200">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -183,6 +198,14 @@ const handleStatusToggle = async (eventId, currentStatus) => {
                             {member.Status ? "Present" : "Absent"}
                           </button>
                         </td>
+                      <td className="px-6 py-4 text-gray-400">
+                        <button
+                            onClick={() => handleDelete(member._id)}
+                            className="px-3 py-1 rounded-full text-xs font-medium bg-red-900/40 text-red-400 hover:bg-red-900/60 ease-in-out duration-200"
+                          >
+                          <Trash2 className="w-5"/>
+                          </button>
+                      </td>
                   </motion.tr>
                 ))}
               </tbody>
@@ -209,9 +232,8 @@ const handleStatusToggle = async (eventId, currentStatus) => {
                     })}
                   </span>
                 </div>
-                <div className="text-gray-400 text-sm">{member.email}</div>
                 <div className="flex justify-between items-center">
-                <div className="text-gray-400 text-sm">{member.phone}</div>
+                <div className="text-gray-400 text-sm">{member.email}</div>
                 <div className="text-gray-400 text-sm">
                   <button
                             onClick={() => handleStatusToggle(member._id,member.Status)}
@@ -224,6 +246,15 @@ const handleStatusToggle = async (eventId, currentStatus) => {
                             {member.Status ? "Present" : "Absent"}
                           </button>
                 </div>
+                </div>
+                <div className="flex justify-between items-center">
+                <div className="text-gray-400 text-sm">{member.phone}</div>
+                <button
+                            onClick={() => handleDelete(member._id)}
+                            className="px-2 py-1 rounded-full text-xs font-medium  text-red-500/80"
+                          >
+                          <Trash2 className="w-5"/>
+                          </button>
                 </div>
               </motion.div>
             ))}
