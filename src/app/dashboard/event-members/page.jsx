@@ -189,7 +189,7 @@ const handleStatusToggle = async (eventId, currentStatus) => {
                     <td className="px-6 py-4 text-gray-400">
                           <button
                             onClick={() => handleStatusToggle(member._id,member.Status)}
-                            className={`px-3 py-1 rounded-full text-xs font-medium ${
+                            className={`px-2 py-1 rounded-full text-xs font-medium ${
                               member.Status
                                 ? "bg-green-900/40 text-green-400"
                                 : "bg-red-900/40 text-red-400"
