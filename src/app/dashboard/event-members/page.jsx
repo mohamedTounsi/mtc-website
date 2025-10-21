@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Loader2, Users, Download, Trash2 } from "lucide-react";
+import { Loader2, Users, Download, Trash2,Search } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function EventMembersPage() {
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
-
+  const [searchTerm, setSearchTerm] = useState(""); // NEW: search state
 
   const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this member?")) return;
@@ -23,36 +23,32 @@ export default function EventMembersPage() {
     }
   };
 
+  const handleStatusToggle = async (eventId, currentStatus) => {
+    try {
+      const response = await fetch(`/api/eventform/${eventId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ Status: !currentStatus }),
+      });
 
-const handleStatusToggle = async (eventId, currentStatus) => {
-  try {
-    const response = await fetch(`/api/eventform/${eventId}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ Status: !currentStatus }),
-    });
+      if (!response.ok) {
+        throw new Error("Failed to toggle status");
+      }
 
-    if (!response.ok) {
-      throw new Error('Failed to toggle status');
+      const updatedEvent = await response.json();
+
+      setMembers((prev) =>
+        prev.map((m) =>
+          m._id === eventId ? { ...m, Status: updatedEvent.Status } : m
+        )
+      );
+
+      return updatedEvent;
+    } catch (error) {
+      console.error(error);
+      return null;
     }
-
-    const updatedEvent = await response.json();
-
-    // Add this block to dynamically update the view
-    setMembers((prev) =>
-      prev.map((m) =>
-        m._id === eventId ? { ...m, Status: updatedEvent.Status } : m
-      )
-    );
-
-    return updatedEvent;
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
-};
-
-
+  };
 
   useEffect(() => {
     const fetchMembers = async () => {
@@ -74,30 +70,44 @@ const handleStatusToggle = async (eventId, currentStatus) => {
   };
 
   const handleReset = async () => {
-  if (!window.confirm("Are you sure you want to delete ALL event members? This action cannot be undone.")) {
-    return;
-  }
-  setDeleting(true);
-  try {
-    const res = await fetch("/api/delete-event-members", {
-      method: "DELETE",
-    });
-    const data = await res.json();
-
-    if (res.ok) {
-      alert(`Success: ${data.deletedCount} event members deleted.`);
-      setMembers([]); // clear list on success
-    } else {
-      alert(`Error: ${data.error || "Failed to delete event members."}`);
+    if (
+      !window.confirm(
+        "Are you sure you want to delete ALL event members? This action cannot be undone."
+      )
+    ) {
+      return;
     }
-  } catch (error) {
-    console.error(error);
-    alert("An error occurred while deleting event members.");
-  } finally {
-    setDeleting(false);
-  }
-};
+    setDeleting(true);
+    try {
+      const res = await fetch("/api/delete-event-members", {
+        method: "DELETE",
+      });
+      const data = await res.json();
 
+      if (res.ok) {
+        alert(`Success: ${data.deletedCount} event members deleted.`);
+        setMembers([]); // clear list on success
+      } else {
+        alert(`Error: ${data.error || "Failed to delete event members."}`);
+      }
+    } catch (error) {
+      console.error(error);
+      alert("An error occurred while deleting event members.");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  // NEW: Filter members based on search term
+  const filteredMembers = members.filter((member) => {
+    const term = searchTerm.toLowerCase();
+    return (
+      member.firstName.toLowerCase().includes(term) ||
+      member.lastName.toLowerCase().includes(term) ||
+      member.email.toLowerCase().includes(term) ||
+      member.phone.toLowerCase().includes(term)
+    );
+  });
 
   return (
     <motion.div
@@ -112,7 +122,6 @@ const handleStatusToggle = async (eventId, currentStatus) => {
           <Users className="w-6 h-6 text-white" />
         </div>
         <h1 className="text-2xl font-semibold bg-gradient-to-r from-purple-400 to-fuchsia-500 bg-clip-text text-transparent flex-1">
-          
           Event Members
         </h1>
         <div className="flex flex-col sm:flex-row gap-2">
@@ -137,16 +146,27 @@ const handleStatusToggle = async (eventId, currentStatus) => {
           </button>
         </div>
       </div>
-
+      {/* NEW: Search Bar */}
+      <div className="flex flex-col md:flex-row md:items-center mb-5">
+        <Search className="bg-[#111] text-gray-300 mx-2 hidden lg:flex"/>
+        
+        <input
+          type="text"
+          placeholder="Search for members"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full  px-4 py-2 rounded-lg border border-gray-700 bg-[#111] text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-fuchsia-600"
+        />
+      </div>
 
       {/* Loading State */}
       {loading ? (
         <div className="flex justify-center items-center h-64">
           <Loader2 className="w-8 h-8 animate-spin text-fuchsia-500" />
         </div>
-      ) : members.length === 0 ? (
+      ) : filteredMembers.length === 0 ? (
         <p className="text-gray-400 text-center mt-20 text-sm">
-          No members have registered yet.
+          No matching members found.
         </p>
       ) : (
         <>
@@ -155,18 +175,34 @@ const handleStatusToggle = async (eventId, currentStatus) => {
             <table className="min-w-full border-collapse text-sm md:text-base">
               <thead>
                 <tr className="bg-gradient-to-r from-purple-900/40 to-fuchsia-900/40 border-b border-purple-800/60">
-                  <th className="px-6 py-4 text-left font-semibold text-gray-200">#</th>
-                  <th className="px-6 py-4 text-left font-semibold text-gray-200">First Name</th>
-                  <th className="px-6 py-4 text-left font-semibold text-gray-200">Last Name</th>
-                  <th className="px-6 py-4 text-left font-semibold text-gray-200">Email</th>
-                  <th className="px-6 py-4 text-left font-semibold text-gray-200">Phone</th>
-                  <th className="px-6 py-4 text-left font-semibold text-gray-200">Date</th>
-                  <th className="px-6 py-4 text-left font-semibold text-gray-200">Status</th>
-                  <th className="px-6 py-4 text-left font-semibold text-gray-200">Actions</th>
+                  <th className="px-6 py-4 text-left font-semibold text-gray-200">
+                    #
+                  </th>
+                  <th className="px-6 py-4 text-left font-semibold text-gray-200">
+                    First Name
+                  </th>
+                  <th className="px-6 py-4 text-left font-semibold text-gray-200">
+                    Last Name
+                  </th>
+                  <th className="px-6 py-4 text-left font-semibold text-gray-200">
+                    Email
+                  </th>
+                  <th className="px-6 py-4 text-left font-semibold text-gray-200">
+                    Phone
+                  </th>
+                  <th className="px-6 py-4 text-left font-semibold text-gray-200">
+                    Date
+                  </th>
+                  <th className="px-6 py-4 text-left font-semibold text-gray-200">
+                    Status
+                  </th>
+                  <th className="px-6 py-4 text-left font-semibold text-gray-200">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {members.map((member, index) => (
+                {filteredMembers.map((member, index) => (
                   <motion.tr
                     key={member._id}
                     initial={{ opacity: 0 }}
@@ -175,10 +211,18 @@ const handleStatusToggle = async (eventId, currentStatus) => {
                     className="border-b border-purple-800/40 hover:bg-purple-900/30 hover:shadow-md hover:shadow-fuchsia-800/10 transition-all duration-200"
                   >
                     <td className="px-6 py-4 text-gray-400">{index + 1}</td>
-                    <td className="px-6 py-4 font-medium text-gray-100">{member.firstName}</td>
-                    <td className="px-6 py-4 text-gray-200">{member.lastName}</td>
-                    <td className="px-6 py-4 text-gray-400">{member.email}</td>
-                    <td className="px-6 py-4 text-gray-400">{member.phone}</td>
+                    <td className="px-6 py-4 font-medium text-gray-100">
+                      {member.firstName}
+                    </td>
+                    <td className="px-6 py-4 text-gray-200">
+                      {member.lastName}
+                    </td>
+                    <td className="px-6 py-4 text-gray-400">
+                      {member.email}
+                    </td>
+                    <td className="px-6 py-4 text-gray-400">
+                      {member.phone}
+                    </td>
                     <td className="px-6 py-4 text-gray-400">
                       {new Date(member.createdAt).toLocaleDateString("en-GB", {
                         day: "2-digit",
@@ -187,25 +231,27 @@ const handleStatusToggle = async (eventId, currentStatus) => {
                       })}
                     </td>
                     <td className="px-6 py-4 text-gray-400">
-                          <button
-                            onClick={() => handleStatusToggle(member._id,member.Status)}
-                            className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              member.Status
-                                ? "bg-green-900/40 text-green-400"
-                                : "bg-red-900/40 text-red-400"
-                            }`}
-                          >
-                            {member.Status ? "Present" : "Absent"}
-                          </button>
-                        </td>
-                      <td className="px-6 py-4 text-gray-400">
-                        <button
-                            onClick={() => handleDelete(member._id)}
-                            className="px-3 py-1 rounded-full text-xs font-medium bg-red-900/40 text-red-400 hover:bg-red-900/60 ease-in-out duration-200"
-                          >
-                          <Trash2 className="w-5"/>
-                          </button>
-                      </td>
+                      <button
+                        onClick={() =>
+                          handleStatusToggle(member._id, member.Status)
+                        }
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          member.Status
+                            ? "bg-green-900/40 text-green-400"
+                            : "bg-red-900/40 text-red-400"
+                        }`}
+                      >
+                        {member.Status ? "Present" : "Absent"}
+                      </button>
+                    </td>
+                    <td className="px-6 py-4 text-gray-400">
+                      <button
+                        onClick={() => handleDelete(member._id)}
+                        className="px-3 py-1 rounded-full text-xs font-medium bg-red-900/40 text-red-400 hover:bg-red-900/60 ease-in-out duration-200"
+                      >
+                        <Trash2 className="w-5" />
+                      </button>
+                    </td>
                   </motion.tr>
                 ))}
               </tbody>
@@ -214,7 +260,7 @@ const handleStatusToggle = async (eventId, currentStatus) => {
 
           {/* Mobile Cards */}
           <div className="lg:hidden flex flex-col gap-4">
-            {members.map((member, index) => (
+            {filteredMembers.map((member, index) => (
               <motion.div
                 key={member._id}
                 initial={{ opacity: 0 }}
@@ -223,7 +269,9 @@ const handleStatusToggle = async (eventId, currentStatus) => {
                 className="bg-gradient-to-b from-[#131318] to-[#0d0d10] rounded-2xl border border-purple-800/50 shadow-lg shadow-purple-900/30 p-4 flex flex-col gap-2"
               >
                 <div className="flex justify-between items-center">
-                  <h3 className="font-semibold text-white">{member.firstName} {member.lastName}</h3>
+                  <h3 className="font-semibold text-white">
+                    {member.firstName} {member.lastName}
+                  </h3>
                   <span className="text-gray-400 text-sm">
                     {new Date(member.createdAt).toLocaleDateString("en-GB", {
                       day: "2-digit",
@@ -233,28 +281,30 @@ const handleStatusToggle = async (eventId, currentStatus) => {
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
-                <div className="text-gray-400 text-sm">{member.email}</div>
-                <div className="text-gray-400 text-sm">
-                  <button
-                            onClick={() => handleStatusToggle(member._id,member.Status)}
-                            className={`px-3 py-1 rounded-full text-xs font-medium ${
-                              member.Status
-                                ? "bg-green-900/40 text-green-400"
-                                : "bg-red-900/40 text-red-400"
-                            }`}
-                          >
-                            {member.Status ? "Present" : "Absent"}
-                          </button>
-                </div>
+                  <div className="text-gray-400 text-sm">{member.email}</div>
+                  <div className="text-gray-400 text-sm">
+                    <button
+                      onClick={() =>
+                        handleStatusToggle(member._id, member.Status)
+                      }
+                      className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        member.Status
+                          ? "bg-green-900/40 text-green-400"
+                          : "bg-red-900/40 text-red-400"
+                      }`}
+                    >
+                      {member.Status ? "Present" : "Absent"}
+                    </button>
+                  </div>
                 </div>
                 <div className="flex justify-between items-center">
-                <div className="text-gray-400 text-sm">{member.phone}</div>
-                <button
-                            onClick={() => handleDelete(member._id)}
-                            className="px-2 py-1 rounded-full text-xs font-medium  text-red-500/80"
-                          >
-                          <Trash2 className="w-5"/>
-                          </button>
+                  <div className="text-gray-400 text-sm">{member.phone}</div>
+                  <button
+                    onClick={() => handleDelete(member._id)}
+                    className="px-2 py-1 rounded-full text-xs font-medium  text-red-500/80"
+                  >
+                    <Trash2 className="w-5" />
+                  </button>
                 </div>
               </motion.div>
             ))}
