@@ -155,7 +155,7 @@ export default function EventMembersPage() {
           placeholder="Search for members"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full  px-4 py-2 rounded-lg border border-gray-700 bg-[#111] text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-fuchsia-600"
+          className="w-full  px-4 py-2 rounded-lg border border-purple-800/50 shadow-lg shadow-purple-900/30 backdrop-blur-sm bg-[#111] text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-fuchsia-600"
         />
       </div>
 
