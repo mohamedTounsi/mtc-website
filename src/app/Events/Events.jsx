@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import ModernMarquee from "../components/ModernMarquee";
+import EventCard from "../components/EventCard";
 
 export default function Events() {
   const router = useRouter();
@@ -319,142 +320,18 @@ export default function Events() {
               })}
             </motion.div>
 
-            {/* Events Grid */}
             <motion.div
               layout
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             >
               <AnimatePresence>
-                {filteredEvents.map((event, index) => (
-                  <motion.div
+                {filteredEvents.map((event) => (
+                  <EventCard
                     key={event._id || event.id}
-                    layout
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.3, delay: index * 0.1 }}
-                    whileHover={{ y: -5 }}
-                    className="group bg-gradient-to-br from-gray-800/50 to-purple-900/30 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl hover:shadow-purple-500/10 transition-all duration-300"
-                  >
-                    {/* Event Image */}
-                    <div className="relative h-48 overflow-hidden">
-                      <Image
-                        src={event.image}
-                        alt={event.title}
-                        fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-
-                      {/* Category Badge */}
-                      <div className="absolute top-4 left-4">
-                        <span
-                          className={`px-3 py-1 rounded-full text-xs font-semibold text-white ${
-                            event.category === "workshop"
-                              ? "bg-blue-500/80"
-                              : event.category === "bootcamp"
-                              ? "bg-green-500/80"
-                              : event.category === "hackathon"
-                              ? "bg-orange-500/80"
-                              : "bg-purple-500/80"
-                          }`}
-                        >
-                          {event.category.charAt(0).toUpperCase() +
-                            event.category.slice(1)}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Event Content */}
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold text-white mb-2 line-clamp-2">
-                        {event.title}
-                      </h3>
-
-                      <p className="text-gray-300 text-sm mb-4 line-clamp-2">
-                        {event.description}
-                      </p>
-
-                      {/* Event Meta */}
-                      <div className="space-y-3 mb-4">
-                        <div className="flex items-center space-x-2 text-sm text-gray-400">
-                          <Calendar className="w-4 h-4" />
-                          <span>{event.date}</span>
-                          <span className="text-gray-600">•</span>
-                        </div>
-
-                        <div className="flex items-center space-x-2 text-sm text-gray-400">
-                          <MapPin className="w-4 h-4" />
-                          <span>{event.location}</span>
-                        </div>
-                      </div>
-
-                      {/* Tags */}
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {event.tags &&
-                          event.tags.map((tag, tagIndex) => (
-                            <span
-                              key={tagIndex}
-                              className="inline-flex items-center space-x-1 px-2 py-1 bg-white/5 rounded-lg text-xs text-gray-300 border border-white/10"
-                            >
-                              <Tag className="w-3 h-3" />
-                              <span>{tag}</span>
-                            </span>
-                          ))}
-                      </div>
-
-                      {/* Action Button */}
-                      <motion.button
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={() =>
-                          setExpandedEvent(
-                            expandedEvent === (event._id || event.id)
-                              ? null
-                              : event._id || event.id
-                          )
-                        }
-                        className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 text-sm"
-                      >
-                        {expandedEvent === (event._id || event.id)
-                          ? "Show Less"
-                          : "Learn More"}
-                      </motion.button>
-
-                      {/* Expanded Details */}
-                      <AnimatePresence>
-                        {expandedEvent === (event._id || event.id) && (
-                          <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: "auto" }}
-                            exit={{ opacity: 0, height: 0 }}
-                            transition={{ duration: 0.3 }}
-                            className="mt-4 pt-4 border-t border-white/10"
-                          >
-                            <div className="space-y-2 text-sm text-gray-300">
-                              <p>{event.description}</p>
-                              <div className="grid grid-cols-2 gap-4 text-xs">
-                                <div>
-                                  <strong>Duration:</strong> {event.duration}
-                                </div>
-                                <div>
-                                  <strong>Level:</strong> {event.difficulty}
-                                </div>
-                                <div>
-                                  <strong>Attendees:</strong> {event.attendees}
-                                </div>
-                                <div>
-                                  <strong>Type:</strong>{" "}
-                                  {event.category.charAt(0).toUpperCase() +
-                                    event.category.slice(1)}
-                                </div>
-                              </div>
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  </motion.div>
+                    event={event}
+                    expandedEvent={expandedEvent}
+                    setExpandedEvent={setExpandedEvent}
+                  />
                 ))}
               </AnimatePresence>
             </motion.div>

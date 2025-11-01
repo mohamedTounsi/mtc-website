@@ -53,17 +53,9 @@ export default function Admin() {
         <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-blue-600/5 rounded-full blur-2xl animate-pulse delay-500"></div>
       </div>
 
-      <div className="max-w-7xl mx-auto relative z-10 px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
+      <div className="max-w-7xl mx-auto relative z-10 px-4 sm:px-6 lg:px-8 py-4 md:py-12 lg:py-20">
         {/* Header */}
-        <div className="text-center mb-16 lg:mb-20">
-          <div className="inline-flex items-center gap-2 mb-6">
-            <Sparkles className="w-6 h-6 text-purple-400 animate-pulse" />
-            <span className="text-purple-400 text-sm font-semibold uppercase tracking-widest">
-              Leadership
-            </span>
-            <Sparkles className="w-6 h-6 text-purple-400 animate-pulse" />
-          </div>
-
+        <div className="text-center mb-5 md:mb-16 lg:mb-20">
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-white via-purple-200 to-white bg-clip-text text-transparent mb-6 tracking-tight">
             ADMINISTRATION
           </h1>

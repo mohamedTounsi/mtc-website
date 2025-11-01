@@ -43,21 +43,22 @@ export default function Department() {
       id="departments"
       className="relative w-full mx-auto px-4 sm:px-6 lg:px-8 text-white py-16 lg:py-24 overflow-hidden"
     >
-      {/* Background Image with Enhanced Overlay */}
-      <div
-        className="absolute inset-0 z-0"
-        style={{
-          backgroundImage: `url('/gallery10.jpg')`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundAttachment: "fixed",
-        }}
-      >
-        {/* Gradient Overlay for Better Text Contrast */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/20"></div>
+      {/* Background */}
+      <div className="absolute inset-0 z-0">
+        {/* Desktop Background Image */}
+        <div
+          className="hidden sm:block absolute inset-0 bg-cover bg-center bg-fixed"
+          style={{ backgroundImage: "url('/gallery10.jpg')" }}
+        ></div>
 
-        {/* Blur Effect on Edges */}
-        <div className="absolute inset-0 backdrop-blur-[2px]"></div>
+        {/* Mobile Background Texture */}
+        <div className="block sm:hidden absolute inset-0 bg-gradient-to-br from-black via-zinc-800 to-black">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,_rgba(255,255,255,0.05),_transparent_25%),radial-gradient(circle_at_80%_80%,_rgba(255,255,255,0.05),_transparent_25%)] bg-repeat bg-[length:200px_200px] opacity-30"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(128,0,128,0.1),_transparent_30%)] bg-repeat bg-[length:150px_150px] opacity-20"></div>
+        </div>
+
+        {/* Overlay for both */}
+        <div className="absolute inset-0 bg-black/30"></div>
       </div>
 
       {/* Content Container */}
@@ -73,7 +74,7 @@ export default function Department() {
           <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent mb-8 drop-shadow-2xl">
             OUR DEPARTMENTS
           </h1>
-          <div className="w-32 h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 rounded-full mx-auto shadow-lg shadow-purple-500/50"></div>
+          <div className="w-32 h-1 bg-gradient-to-r from-purple-500 via-zinc-500 to-purple-500 rounded-full mx-auto shadow-lg shadow-purple-500/50"></div>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -125,7 +126,6 @@ export default function Department() {
 
                 {/* Content */}
                 <div className="relative z-10 h-full flex flex-col items-center justify-center p-8">
-                  {/* Icon Container */}
                   <motion.div
                     whileHover={{ scale: 1.15, rotate: 5 }}
                     transition={{ type: "spring", stiffness: 300 }}
@@ -136,7 +136,6 @@ export default function Department() {
                     </div>
                   </motion.div>
 
-                  {/* Title */}
                   <div className="text-center space-y-2">
                     <h3 className="text-2xl lg:text-3xl font-bold text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-200 group-hover:via-white group-hover:to-pink-200 group-hover:bg-clip-text transition-all duration-300 drop-shadow-lg">
                       {dept.title}
@@ -145,24 +144,7 @@ export default function Department() {
                       {dept.subtitle}
                     </p>
                   </div>
-
-                  {/* Hover indicator */}
-                  <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                    <span className="text-purple-200 text-sm font-semibold drop-shadow-lg">
-                      Explore
-                    </span>
-                    <motion.div
-                      animate={{ x: [0, 5, 0] }}
-                      transition={{ duration: 1.5, repeat: Infinity }}
-                    >
-                      <div className="w-2 h-2 bg-purple-300 rounded-full shadow-lg shadow-purple-400/50"></div>
-                    </motion.div>
-                  </div>
                 </div>
-
-                {/* Corner decorations */}
-                <div className="absolute top-4 left-4 w-8 h-8 border-t-2 border-l-2 border-white/20 rounded-tl-lg group-hover:border-white/50 transition-colors duration-300"></div>
-                <div className="absolute bottom-4 right-4 w-8 h-8 border-b-2 border-r-2 border-white/20 rounded-br-lg group-hover:border-white/50 transition-colors duration-300"></div>
               </div>
             </motion.div>
           ))}
