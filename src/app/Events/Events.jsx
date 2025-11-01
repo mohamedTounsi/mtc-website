@@ -127,7 +127,18 @@ export default function Events() {
       : recentEvents.filter((event) => event.category === activeFilter);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900/20 via-purple-900/20 to-violet-900/20 overflow-hidden">
+    <div className="min-h-screen relative z-10  bg-gradient-to-br from-gray-900/20 via-purple-900/10 to-violet-900/10 overflow-hidden">
+      {/* Subtle White Grid Background */}
+      <div
+        className="absolute inset-0 z-0 opacity-[0.3]"
+        style={{
+          backgroundImage: `
+        linear-gradient(to right, rgba(255,255,255,0.3) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.3) 1px, transparent 1px)
+      `,
+          backgroundSize: "60px 60px",
+        }}
+      ></div>
       {/* Animated Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -left-40 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
@@ -187,7 +198,9 @@ export default function Events() {
                         <div>
                           <p className="text-sm text-gray-400">Date</p>
                           <p className="text-white font-semibold">
-                            {new Date(featuredEvent.eventTime).toLocaleDateString()}
+                            {new Date(
+                              featuredEvent.eventTime
+                            ).toLocaleDateString()}
                           </p>
                         </div>
                       </div>
@@ -346,8 +359,8 @@ export default function Events() {
                               : "bg-purple-500/80"
                           }`}
                         >
-                          {event.category.charAt(0).toUpperCase() + event.category.slice(1)}
-
+                          {event.category.charAt(0).toUpperCase() +
+                            event.category.slice(1)}
                         </span>
                       </div>
                     </div>
@@ -431,8 +444,9 @@ export default function Events() {
                                   <strong>Attendees:</strong> {event.attendees}
                                 </div>
                                 <div>
-                                  <strong>Type:</strong> {event.category.charAt(0).toUpperCase() + event.category.slice(1)}
-
+                                  <strong>Type:</strong>{" "}
+                                  {event.category.charAt(0).toUpperCase() +
+                                    event.category.slice(1)}
                                 </div>
                               </div>
                             </div>

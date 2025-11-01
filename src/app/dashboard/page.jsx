@@ -57,6 +57,15 @@ export default function DashboardPage() {
       iconColor: "text-red-400",
       link: "/dashboard/recentEvents",
     },
+    {
+      icon: Users,
+      title: "Hiring Members",
+      description: "See Hiring Members",
+      gradient: "from-purple-500 to-purple-500",
+      iconBg: "bg-purple-500/10",
+      iconColor: "text-pink-400",
+      link: "/dashboard/hiring-members",
+    },
   ];
 
   return (

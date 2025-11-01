@@ -10,6 +10,7 @@ import Footer from "./footer/Footer";
 import ContactUs from "./contact/ContactUs";
 import Gallery from "./gallery/Gallery";
 import Events from "./Events/Events";
+import WeAreHiring from "./components/WeAreHiring";
 
 export default function Home() {
   useEffect(() => {
@@ -19,6 +20,7 @@ export default function Home() {
   return (
     <div>
       <Hero />
+      <WeAreHiring />
       <History />
       <AboutUs />
       <Benefits />

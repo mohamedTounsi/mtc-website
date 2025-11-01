@@ -13,6 +13,7 @@ const navItems = [
   { name: "Email Sender", path: "/dashboard/email-sender" },
   { name: "Featured-Event", path: "/dashboard/featured-event" },
   { name: "Recent Events", path: "/dashboard/recentEvents" },
+  { name: "Hiring Members", path: "/dashboard/hiring-members" },
 ];
 
 export default function DashboardLayout({ children }) {

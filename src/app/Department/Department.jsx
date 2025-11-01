@@ -54,10 +54,7 @@ export default function Department() {
         }}
       >
         {/* Gradient Overlay for Better Text Contrast */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black/80"></div>
-
-        {/* Additional Dark Overlay */}
-        <div className="absolute inset-0 bg-black/40"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/20"></div>
 
         {/* Blur Effect on Edges */}
         <div className="absolute inset-0 backdrop-blur-[2px]"></div>
