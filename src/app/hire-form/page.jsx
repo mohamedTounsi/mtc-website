@@ -8,6 +8,7 @@ import {
   Briefcase,
   MessageSquare,
   Send,
+  Facebook,
   CheckCircle,
   AlertCircle,
 } from "lucide-react";
@@ -22,6 +23,7 @@ export default function HireForm() {
     experience: "",
     resumeUrl: "",
     message: "",
+    facebook:"",
     wantToPay: "",
   });
 
@@ -54,6 +56,7 @@ export default function HireForm() {
         experience: "",
         resumeUrl: "",
         message: "",
+        facebook:"",
         wantToPay: "",
       });
     } catch (error) {
@@ -176,6 +179,24 @@ export default function HireForm() {
                   </div>
                 </div>
 
+                <div>
+                  <label className="block text-sm font-medium text-white mb-2">
+                    Facebook Profile
+                  </label>
+                  <div className="relative">
+                    <Facebook className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300" />
+                    <input
+                      type="text"
+                      name="facebook"
+                      value={formData.facebook}
+                      onChange={handleInputChange}
+                      required
+                      placeholder="Enter your Facebook profile URL"
+                      className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-purple-300/70 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20"
+                    />
+                  </div>
+                </div>
+
                 {/* Position */}
                 <div>
                   <label className="block text-sm font-medium text-white mb-2">
@@ -190,7 +211,7 @@ export default function HireForm() {
                       required
                       className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 appearance-none"
                     >
-                      <option className="text-zinc-800" value="">
+                      <option className="text-zinc-800" disabled value="">
                         Select a position
                       </option>
                       <option className="text-zinc-800">HR Manager</option>
@@ -227,6 +248,8 @@ export default function HireForm() {
                     />
                   </div>
                 </div>
+
+                
 
                 {/* Submit */}
                 <button

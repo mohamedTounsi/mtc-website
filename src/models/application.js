@@ -14,13 +14,17 @@ const ApplicationSchema = new mongoose.Schema(
         "Videomaker",
         "Graphic Designer",
         "Sponsoring Manager",
+        "Other",
       ],
       required: true,
     },
-    message: { type: String }, // optional now
+    message: { type: String },
+    facebook: { type: String, required: true },
   },
   { timestamps: true }
 );
 
-export default mongoose.models.Application ||
-  mongoose.model("Application", ApplicationSchema);
+if (mongoose.models.Application) {
+  delete mongoose.models.Application;
+}
+export default mongoose.model("Application", ApplicationSchema);

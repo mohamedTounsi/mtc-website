@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Trash2, Search, Download, Users, Briefcase } from "lucide-react";
+import { Trash2, Search,Facebook, Download, Users, Briefcase } from "lucide-react";
 
 export default function HiringMembersPage() {
   const [applications, setApplications] = useState([]);
@@ -165,6 +165,7 @@ export default function HiringMembersPage() {
                         "Phone",
                         "Position",
                         "Message",
+                        "Facebook",
                         "Actions",
                       ].map((header) => (
                         <th
@@ -207,6 +208,18 @@ export default function HiringMembersPage() {
                               </button>
                             )}
                           </p>
+                        </td>
+                        <td className="px-6 py-4">
+                          {app.facebook && (
+                            <a
+                              href={app.facebook}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-400 hover:text-blue-500"
+                            >
+                              <Facebook className="w-4 h-4" />
+                            </a>
+                          )}
                         </td>
 
                         <td className="px-6 py-4 text-center">
