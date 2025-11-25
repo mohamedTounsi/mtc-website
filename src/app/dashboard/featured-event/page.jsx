@@ -137,6 +137,7 @@ export default function FeaturedEventDashboard() {
                       day: "numeric",
                       month: "long",
                       year: "numeric",
+                      timeZone: "Africa/Tunis",
                     })
                   : ""}
                     </p>
@@ -155,7 +156,7 @@ export default function FeaturedEventDashboard() {
                         {
                           hour: "2-digit",
                           minute: "2-digit",
-                          timeZone: "UTC+1",
+                          timeZone: "Africa/Tunis",
                         }
                       )}
                     </p>

@@ -228,6 +228,7 @@ export default function EventMembersPage() {
                         day: "2-digit",
                         month: "short",
                         year: "numeric",
+                        timeZone: "Africa/Tunis",
                       })}
                     </td>
                     <td className="px-6 py-4 text-gray-400">
@@ -277,6 +278,7 @@ export default function EventMembersPage() {
                       day: "2-digit",
                       month: "short",
                       year: "numeric",
+                      timeZone: "Africa/Tunis",
                     })}
                   </span>
                 </div>

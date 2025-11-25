@@ -201,7 +201,12 @@ export default function Events() {
                           <p className="text-white font-semibold">
                             {new Date(
                               featuredEvent.eventTime
-                            ).toLocaleDateString()}
+                            ).toLocaleDateString("en-US", {
+                              day: "numeric",
+                              month: "long",
+                              year: "numeric",
+                              timeZone: "Africa/Tunis",
+                            })}
                           </p>
                         </div>
                       </div>

@@ -13,15 +13,9 @@ const InputField = ({ label, name, type = "text", value, onChange }) => (
     <label className="block text-sm font-semibold text-gray-700 mb-2">
       {label} *
     </label>
-    <input
-      type={type}
-      name={name}
-      placeholder={label}
-      value={value}
-      onChange={onChange}
+    <input type={type} name={name} placeholder={label} value={value} onChange={onChange}
       className="w-full text-gray-900 px-4 py-3 border-2 border-gray-300 bg-white rounded-lg focus:border-purple-600 focus:outline-none transition-colors"
-      required
-    />
+      required />
   </div>
 );
 
@@ -57,7 +51,7 @@ export default function EventFormPage() {
         const data = await res.json();
         if (data && Object.keys(data).length > 0) {
           setFeaturedEvent(data);
-          
+
         } else {
           router.replace("/404");
         }
@@ -81,23 +75,12 @@ export default function EventFormPage() {
       const now = new Date().getTime();
       const distance = eventDate - now;
 
-      if (distance < 0) {
-        setCountdown("Event has started!");
-        clearInterval(interval);
-        return;
-      }
-
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor(
-        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      );
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-      setCountdown(`${days}d ${hours}h ${minutes}m ${seconds}s`);
-    }, 1000);
-
-    return () => clearInterval(interval);
+      if (distance < 0) { setCountdown("Event has started!"); clearInterval(interval); return; } const
+        days = Math.floor(distance / (1000 * 60 * 60 * 24)); const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) /
+          (1000 * 60 * 60)); const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)); const
+            seconds = Math.floor((distance % (1000 * 60)) / 1000); setCountdown(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+    },
+      1000); return () => clearInterval(interval);
   }, [featuredEvent]);
 
   const handleChange = (e) => {
@@ -137,16 +120,15 @@ export default function EventFormPage() {
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-black to-purple-950">
       {/* Toast Notification */}
       {isSubmitted && (
-        <div className="fixed top-6 right-6 bg-purple-700 text-white px-6 py-3 rounded-lg shadow-2xl z-50 animate-fade-in-out">
+        <div
+          className="fixed top-6 right-6 bg-purple-700 text-white px-6 py-3 rounded-lg shadow-2xl z-50 animate-fade-in-out">
           ✓ Registration successful!
         </div>
       )}
 
       {/* Back Button */}
-      <button
-        onClick={handleBack}
-        className="fixed top-6 left-6 flex items-center gap-2 text-white hover:text-purple-300 transition-colors group z-40"
-      >
+      <button onClick={handleBack}
+        className="fixed top-6 left-6 flex items-center gap-2 text-white hover:text-purple-300 transition-colors group z-40">
         <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
         <span className="font-medium">Back to Home</span>
       </button>
@@ -155,11 +137,8 @@ export default function EventFormPage() {
         <div className="max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-2xl bg-gray-900/20 backdrop-blur-md">
           {/* Hero Section */}
           <div className="relative h-80 md:h-96 bg-black">
-            <img
-              src={featuredEvent?.image || "/placeholder-event.jpg"}
-              alt="Event"
-              className="w-full h-full object-cover brightness-75"
-            />
+            <img src={featuredEvent?.image || "/placeholder-event.jpg"} alt="Event"
+              className="w-full h-full object-cover brightness-75" />
             <div className="absolute inset-0 bg-gradient-to-br from-purple-700/60 to-transparent"></div>
             <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-6">
               <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg mb-2">
@@ -169,7 +148,8 @@ export default function EventFormPage() {
                 {featuredEvent?.description || ""}
               </p>
               {countdown && (
-                <div className="bg-purple-800/70 px-4 py-2 rounded-full text-white font-semibold text-lg shadow-lg">
+                <div
+                  className="bg-purple-800/70 px-4 py-2 rounded-full text-white font-semibold text-lg shadow-lg">
                   ⏳ {countdown}
                 </div>
               )}
@@ -177,16 +157,18 @@ export default function EventFormPage() {
           </div>
 
           {/* Event Details Bar */}
-          <div className="bg-white/10 backdrop-blur-sm border-t border-white/20 flex flex-wrap justify-center gap-6 py-4 px-6 text-white">
+          <div
+            className="bg-white/10 backdrop-blur-sm border-t border-white/20 flex flex-wrap justify-center gap-6 py-4 px-6 text-white">
             <div className="flex items-center gap-2">
               <Calendar className="w-5 h-5 text-purple-300" />
               <span className="font-medium">
                 {featuredEvent
                   ? new Date(featuredEvent.eventTime).toLocaleDateString([], {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    })
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                    timeZone: "Africa/Tunis",
+                  })
                   : ""}
               </span>
             </div>
@@ -195,11 +177,12 @@ export default function EventFormPage() {
               <span className="font-medium">
                 {featuredEvent
                   ? new Date(featuredEvent.eventTime).toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      timeZone: "UTC+1",
-                    })
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    timeZone: "Africa/Tunis",
+                  })
                   : ""}
+
               </span>
             </div>
             <div className="flex items-center gap-2">
@@ -223,44 +206,26 @@ export default function EventFormPage() {
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
-                <InputField
-                  label="First Name"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                />
-                <InputField
-                  label="Last Name"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                />
+                <InputField label="First Name" name="firstName" value={formData.firstName}
+                  onChange={handleChange} />
+                <InputField label="Last Name" name="lastName" value={formData.lastName}
+                  onChange={handleChange} />
               </div>
 
-              <InputField
-                label="Email Address"
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-              />
+              <InputField label="Email Address" type="email" name="email" value={formData.email}
+                onChange={handleChange} />
 
-              <InputField
-                label="Phone Number"
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-              />
+              <InputField label="Phone Number" type="tel" name="phone" value={formData.phone}
+                onChange={handleChange} />
 
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full bg-gradient-to-r from-purple-600 to-purple-800 text-white py-4 rounded-lg font-bold text-lg hover:from-purple-700 hover:to-purple-900 transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
-              >
+              <button type="submit" disabled={isLoading}
+                className="w-full bg-gradient-to-r from-purple-600 to-purple-800 text-white py-4 rounded-lg font-bold text-lg hover:from-purple-700 hover:to-purple-900 transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg">
                 {isLoading ? "Submitting..." : "Complete Registration"}
               </button>
-              
+              {/*<h5 className="text-md text-gray-900 mb-6 text-center">
+                            💻 <span className="font-bold">Note:</span> A personal computer is <span
+                                className="font-bold text-red-600">required</span> for this workshop.
+                        </h5>*/}
             </form>
 
             {/* Event Highlights */}
@@ -269,50 +234,48 @@ export default function EventFormPage() {
                 What to Expect
               </h3>
               <div className="grid md:grid-cols-3 gap-8">
-                <HighlightCard
-                  emoji="🎤"
-                  title="Keynote Speakers"
-                  desc="Industry leaders sharing insights"
-                />
-                <HighlightCard
-                  emoji="🤝"
-                  title="Networking"
-                  desc="Connect with professionals"
-                />
-                <HighlightCard
-                  emoji="💬"
-                  title="Q&A Panels"
-                  desc="Ask experts anything about AI and innovation"
-                />
+                <HighlightCard emoji="🎤" title="Keynote Speakers"
+                  desc="Industry leaders sharing insights" />
+                <HighlightCard emoji="🤝" title="Networking" desc="Connect with professionals" />
+                <HighlightCard emoji="💬" title="Q&A Panels"
+                  desc="Ask experts anything about AI and innovation" />
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <style jsx>{`
-        @keyframes fade-in-out {
-          0% {
-            opacity: 0;
-            transform: translateY(-20px);
-          }
-          10% {
-            opacity: 1;
-            transform: translateY(0);
-          }
-          90% {
-            opacity: 1;
-            transform: translateY(0);
-          }
-          100% {
-            opacity: 0;
-            transform: translateY(-20px);
-          }
+      <style jsx>
+        {
+          ` @keyframes fade-in-out {
+                    0% {
+                        opacity: 0;
+                        transform: translateY(-20px);
+                    }
+
+                    10% {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+
+                    90% {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+
+                    100% {
+                        opacity: 0;
+                        transform: translateY(-20px);
+                    }
+                }
+
+                .animate-fade-in-out {
+                    animation: fade-in-out 3s ease forwards;
+                }
+
+                `
         }
-        .animate-fade-in-out {
-          animation: fade-in-out 3s ease forwards;
-        }
-      `}</style>
+      </style>
     </div>
   );
 }

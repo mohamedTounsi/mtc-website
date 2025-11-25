@@ -12,10 +12,12 @@ function formatDateTimeLocal(value) {
     month: "long",
     day: "numeric",
     year: "numeric",
+    timeZone: "Africa/Tunis",
   });
   const time = dateObj.toLocaleTimeString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
+    timeZone: "Africa/Tunis",
   });
   return { date, time };
 }

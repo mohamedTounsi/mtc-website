@@ -33,11 +33,13 @@ export async function POST(req) {
     const date = dateObj.toLocaleDateString("en-US", {
       month: "long",
       day: "numeric",
-      year: "numeric"
+      year: "numeric",
+      timeZone: "Africa/Tunis",
     });
     const time = dateObj.toLocaleTimeString("en-US", {
       hour: "2-digit",
-      minute: "2-digit"
+      minute: "2-digit",
+      timeZone: "Africa/Tunis",
     });
 
     // Save recent event
