@@ -197,7 +197,7 @@ export default function EventFormPage() {
                   ? new Date(featuredEvent.eventTime).toLocaleTimeString([], {
                       hour: "2-digit",
                       minute: "2-digit",
-                      timeZone: "UTC",
+                      timeZone: "UTC+1",
                     })
                   : ""}
               </span>

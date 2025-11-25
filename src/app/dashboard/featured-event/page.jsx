@@ -155,7 +155,7 @@ export default function FeaturedEventDashboard() {
                         {
                           hour: "2-digit",
                           minute: "2-digit",
-                          timeZone: "UTC",
+                          timeZone: "UTC+1",
                         }
                       )}
                     </p>
