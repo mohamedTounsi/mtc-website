@@ -16,7 +16,27 @@ export async function POST(req) {
     try {
       await connectDB();
       const data = await req.json();
-      const newForm = await Eventform.create(data); // <-- match import name
+
+      const email = (data.email || "").toLowerCase().trim();
+      const phone = (data.phone || "").trim();
+
+      const existing = await Eventform.findOne({
+        $or: [{ email }, { phone }],
+      });
+
+      if (existing) {
+        return new Response(
+          JSON.stringify({ error: "Email or phone already registered" }),
+          { status: 409 }
+        );
+      }
+
+      const newForm = await Eventform.create({
+        ...data,
+        email,
+        phone,
+      });
+
       return new Response(JSON.stringify(newForm), { status: 201 });
     } catch (err) {
       console.error("POST /api/eventform error:", err);

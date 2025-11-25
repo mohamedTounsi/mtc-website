@@ -38,6 +38,7 @@ export default function EventFormPage() {
     phone: "",
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errorToast, setErrorToast] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [countdown, setCountdown] = useState("");
   const router = useRouter();
@@ -99,6 +100,12 @@ export default function EventFormPage() {
         body: JSON.stringify(payload),
       });
 
+      if (res.status === 409) {
+        setErrorToast("This email or phone number is already registered");
+        setTimeout(() => setErrorToast(""), 3000);
+        return;
+      }
+
       if (!res.ok) throw new Error("Failed to register");
 
       setFormData({ firstName: "", lastName: "", email: "", phone: "" });
@@ -123,6 +130,12 @@ export default function EventFormPage() {
         <div
           className="fixed top-6 right-6 bg-purple-700 text-white px-6 py-3 rounded-lg shadow-2xl z-50 animate-fade-in-out">
           ✓ Registration successful!
+        </div>
+      )}
+      {errorToast && (
+        <div
+          className="fixed top-6 right-6 bg-red-600 text-white px-6 py-3 rounded-lg shadow-2xl z-50 animate-fade-in-out">
+          {errorToast}
         </div>
       )}
 
