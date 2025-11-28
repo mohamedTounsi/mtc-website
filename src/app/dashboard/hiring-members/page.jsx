@@ -165,7 +165,7 @@ export default function HiringMembersPage() {
                         "Phone",
                         "Position",
                         "Message",
-                        "Facebook",
+                        "Social",
                         "Actions",
                       ].map((header) => (
                         <th
@@ -274,6 +274,20 @@ export default function HiringMembersPage() {
                         </button>
                       )}
                     </p>
+                  </div>
+                  <div className="flex justify-between items-center mt-2">
+                    <div className="flex gap-2">
+                      {app.facebook && (
+                        <a
+                          href={app.facebook}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-400 hover:text-blue-500"
+                        >
+                          <Facebook className="w-4 h-4" />
+                        </a>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}
