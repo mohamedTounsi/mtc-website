@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ArrowLeft,
   Mail,
@@ -28,6 +28,23 @@ export default function HireForm() {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isHiringOpen, setIsHiringOpen] = useState(false);
+  const [loadingHiring, setLoadingHiring] = useState(true);
+
+  useEffect(() => {
+    const fetchHiringStatus = async () => {
+      try {
+        const res = await fetch("/api/settings/hiring");
+        const data = await res.json();
+        setIsHiringOpen(data.isOpen);
+      } catch (err) {
+        console.error("Failed to fetch hiring status", err);
+      } finally {
+        setLoadingHiring(false);
+      }
+    };
+    fetchHiringStatus();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -109,167 +126,206 @@ export default function HireForm() {
         <div className="flex items-center justify-center min-h-screen px-4 py-20">
           <div className="w-full max-w-2xl">
             <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
-              {/* Header */}
-              <div className="px-8 py-6 bg-gradient-to-r from-purple-600/20 to-purple-400/20 border-b border-white/10">
-                <h1 className="text-2xl font-bold text-white mb-2">
-                  Join Our Team
-                </h1>
-                <p className="text-purple-200 text-sm">
-                  We're looking for talented individuals. Apply now to become
-                  part of our growing team.
-                </p>
-              </div>
-
-              {/* Form */}
-              <form onSubmit={handleSubmit} className="p-8 space-y-6">
-                {/* Full Name */}
-                <div>
-                  <label className="block text-sm font-medium text-white mb-2">
-                    Full Name
-                  </label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300" />
-                    <input
-                      type="text"
-                      name="fullName"
-                      value={formData.fullName}
-                      onChange={handleInputChange}
-                      required
-                      placeholder="Enter your full name"
-                      className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-purple-300/70 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20"
-                    />
-                  </div>
+              {loadingHiring ? (
+                <div className="flex justify-center items-center h-64">
+                   <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                 </div>
+              ) : isHiringOpen ? (
+                <>
+                  {/* Header */}
+                  <div className="px-8 py-6 bg-gradient-to-r from-purple-600/20 to-purple-400/20 border-b border-white/10">
+                    <h1 className="text-2xl font-bold text-white mb-2">
+                      Join Our Team
+                    </h1>
+                    <p className="text-purple-200 text-sm">
+                      We're looking for talented individuals. Apply now to become
+                      part of our growing team.
+                    </p>
+                  </div>
 
-                {/* Email & Phone */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-white mb-2">
-                      Email Address
-                    </label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300" />
-                      <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        required
-                        placeholder="your@email.com"
-                        className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-purple-300/70 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20"
-                      />
+                  {/* Form */}
+                  <form onSubmit={handleSubmit} className="p-8 space-y-6">
+                    {/* Full Name */}
+                    <div>
+                      <label className="block text-sm font-medium text-white mb-2">
+                        Full Name
+                      </label>
+                      <div className="relative">
+                        <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300" />
+                        <input
+                          type="text"
+                          name="fullName"
+                          value={formData.fullName}
+                          onChange={handleInputChange}
+                          required
+                          placeholder="Enter your full name"
+                          className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-purple-300/70 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20"
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-white mb-2">
-                      Phone Number
-                    </label>
-                    <div className="relative">
-                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300" />
-                      <input
-                        type="tel"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        required
-                        placeholder="Phone Number"
-                        className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-purple-300/70 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20"
-                      />
+
+                    {/* Email & Phone */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="block text-sm font-medium text-white mb-2">
+                          Email Address
+                        </label>
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300" />
+                          <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleInputChange}
+                            required
+                            placeholder="your@email.com"
+                            className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-purple-300/70 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-white mb-2">
+                          Phone Number
+                        </label>
+                        <div className="relative">
+                          <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300" />
+                          <input
+                            type="tel"
+                            name="phone"
+                            value={formData.phone}
+                            onChange={handleInputChange}
+                            required
+                            placeholder="Phone Number"
+                            className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-purple-300/70 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20"
+                          />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-white mb-2">
-                    Facebook Profile
-                  </label>
-                  <div className="relative">
-                    <Facebook className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300" />
-                    <input
-                      type="text"
-                      name="facebook"
-                      value={formData.facebook}
-                      onChange={handleInputChange}
-                      required
-                      placeholder="Enter your Facebook profile URL"
-                      className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-purple-300/70 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20"
-                    />
-                  </div>
-                </div>
+                    <div>
+                      <label className="block text-sm font-medium text-white mb-2">
+                        Facebook Profile
+                      </label>
+                      <div className="relative">
+                        <Facebook className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300" />
+                        <input
+                          type="text"
+                          name="facebook"
+                          value={formData.facebook}
+                          onChange={handleInputChange}
+                          required
+                          placeholder="Enter your Facebook profile URL"
+                          className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-purple-300/70 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20"
+                        />
+                      </div>
+                    </div>
 
-                {/* Position */}
-                <div>
-                  <label className="block text-sm font-medium text-white mb-2">
-                    Desired Position
-                  </label>
-                  <div className="relative">
-                    <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300" />
-                    <select
-                      name="position"
-                      value={formData.position}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 appearance-none"
+                    {/* Position */}
+                    <div>
+                      <label className="block text-sm font-medium text-white mb-2">
+                        Desired Position
+                      </label>
+                      <div className="relative">
+                        <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-300" />
+                        <select
+                          name="position"
+                          value={formData.position}
+                          onChange={handleInputChange}
+                          required
+                          className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 appearance-none"
+                        >
+                          <option className="text-zinc-800" disabled value="">
+                            Select a position
+                          </option>
+                          <option className="text-zinc-800">HR Manager</option>
+                          <option className="text-zinc-800">
+                            Logistics and Planning Assistant
+                          </option>
+                          <option className="text-zinc-800">Developer</option>
+                          <option className="text-zinc-800">Videomaker</option>
+                          <option className="text-zinc-800">
+                            Graphic Designer
+                          </option>
+                          <option className="text-zinc-800">
+                            Sponsoring Manager
+                          </option>
+                          <option className="text-zinc-800">Other</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    {/* Message */}
+                    <div>
+                      <label className="block text-sm font-medium text-white mb-2">
+                        Tell Us About Yourself
+                      </label>
+                      <div className="relative">
+                        <MessageSquare className="absolute left-3 top-3 w-5 h-5 text-purple-300" />
+                        <textarea
+                          name="message"
+                          value={formData.message}
+                          onChange={handleInputChange}
+                          placeholder="Why would you be a great fit for this position?"
+                          rows="5"
+                          className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-purple-300/70 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 resize-none"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Submit */}
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full py-3 px-6 bg-gradient-to-r from-purple-600 to-purple-500 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-purple-600 focus:ring-2 focus:ring-purple-500/50 transition-all transform hover:scale-[1.02] disabled:opacity-50 flex items-center justify-center gap-2"
                     >
-                      <option className="text-zinc-800" disabled value="">
-                        Select a position
-                      </option>
-                      <option className="text-zinc-800">HR Manager</option>
-                      <option className="text-zinc-800">
-                        Logistics and Planning Assistant
-                      </option>
-                      <option className="text-zinc-800">Developer</option>
-                      <option className="text-zinc-800">Videomaker</option>
-                      <option className="text-zinc-800">
-                        Graphic Designer
-                      </option>
-                      <option className="text-zinc-800">
-                        Sponsoring Manager
-                      </option>
-                      <option className="text-zinc-800">Other</option>
-                    </select>
+                      {isSubmitting ? (
+                        <>
+                          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                          Submitting...
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-5 h-5" />
+                          Submit Application
+                        </>
+                      )}
+                    </button>
+                  </form>
+                </>
+              ) : (
+                <>
+                  {/* Header */}
+                  <div className="px-8 py-6 bg-gradient-to-r from-purple-600/20 to-purple-400/20 border-b border-white/10">
+                    <h1 className="text-2xl font-bold text-white mb-2">
+                      Hiring Closed
+                    </h1>
+                    <p className="text-purple-200 text-sm">
+                      Thank you for your interest. Our hiring period has ended.
+                    </p>
                   </div>
-                </div>
 
-                {/* Message */}
-                <div>
-                  <label className="block text-sm font-medium text-white mb-2">
-                    Tell Us About Yourself
-                  </label>
-                  <div className="relative">
-                    <MessageSquare className="absolute left-3 top-3 w-5 h-5 text-purple-300" />
-                    <textarea
-                      name="message"
-                      value={formData.message}
-                      onChange={handleInputChange}
-                      placeholder="Why would you be a great fit for this position?"
-                      rows="5"
-                      className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-purple-300/70 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 resize-none"
-                    />
+                  {/* Closed Message */}
+                  <div className="p-8 space-y-6 text-center">
+                    <div className="flex justify-center mb-4">
+                      <AlertCircle className="w-16 h-16 text-purple-400 opacity-80" />
+                    </div>
+                    <h2 className="text-xl font-semibold text-white">
+                      Applications are currently closed
+                    </h2>
+                    <p className="text-gray-300">
+                      We appreciate your interest in joining our team. Please stay tuned for future opportunities.
+                    </p>
+                    <div className="pt-4">
+                      <button
+                        onClick={handleGoHome}
+                        className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors border border-white/20"
+                      >
+                        Return to Home
+                      </button>
+                    </div>
                   </div>
-                </div>
-
-                
-
-                {/* Submit */}
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full py-3 px-6 bg-gradient-to-r from-purple-600 to-purple-500 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-purple-600 focus:ring-2 focus:ring-purple-500/50 transition-all transform hover:scale-[1.02] disabled:opacity-50 flex items-center justify-center gap-2"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                      Submitting...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-5 h-5" />
-                      Submit Application
-                    </>
-                  )}
-                </button>
-              </form>
+                </>
+              )}
             </div>
 
             <p className="text-center text-purple-300/70 text-sm mt-6">

@@ -4,9 +4,11 @@ import Marquee from "react-fast-marquee";
 import { Sparkles, Target, Users, Zap, Globe, Award } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-const WeAreHiring = () => {
+const WeAreHiring = ({ isOpen }) => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [speed, setSpeed] = useState(30); // default speed
+  const [isHiringOpen, setIsHiringOpen] = useState(isOpen ?? false);
+  const [loadingHiring, setLoadingHiring] = useState(isOpen === undefined);
   const router = useRouter();
 
   useEffect(() => {
@@ -20,8 +22,23 @@ const WeAreHiring = () => {
     handleResize(); // initial check
     window.addEventListener("resize", handleResize);
 
+    const fetchHiringStatus = async () => {
+      if (isOpen !== undefined) return;
+      
+      try {
+        const res = await fetch("/api/settings/hiring");
+        const data = await res.json();
+        setIsHiringOpen(data.isOpen);
+      } catch (err) {
+        console.error("Failed to fetch hiring status", err);
+      } finally {
+        setLoadingHiring(false);
+      }
+    };
+    fetchHiringStatus();
+
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [isOpen]);
 
   const handleJoinUs = () => {
     router.push("/hire-form");
@@ -125,27 +142,40 @@ const WeAreHiring = () => {
           talents ready to innovate, grow, and make a lasting impact.
         </p>
 
-        <button
-          onClick={handleJoinUs}
-          className="group relative px-10 py-3 text-lg font-light text-white border border-white/70 rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:border-white hover:shadow-[0_0_15px_rgba(255,255,255,0.3)] bg-transparent"
-        >
-          <span className="relative flex items-center justify-center gap-2 tracking-wide">
-            Explore Open Positions
-            <svg
-              className="w-5 h-5 group-hover:translate-x-1 transition-transform stroke-[1.5]"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M13 7l5 5m0 0l-5 5m5-5H6"
-              />
-            </svg>
-          </span>
-        </button>
+        {loadingHiring ? (
+          <div className="text-white/70 animate-pulse">Checking availability...</div>
+        ) : isHiringOpen ? (
+          <button
+            onClick={handleJoinUs}
+            className="group relative px-10 py-3 text-lg font-light text-white border border-white/70 rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:border-white hover:shadow-[0_0_15px_rgba(255,255,255,0.3)] bg-transparent"
+          >
+            <span className="relative flex items-center justify-center gap-2 tracking-wide">
+              Explore Open Positions
+              <svg
+                className="w-5 h-5 group-hover:translate-x-1 transition-transform stroke-[1.5]"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M13 7l5 5m0 0l-5 5m5-5H6"
+                />
+              </svg>
+            </span>
+          </button>
+        ) : (
+          <button
+            disabled
+            className="group relative px-10 py-3 text-lg font-light text-white border border-white/70 rounded-xl overflow-hidden bg-transparent opacity-70 cursor-not-allowed"
+          >
+            <span className="relative flex items-center justify-center gap-2 tracking-wide">
+              Hiring Closed
+            </span>
+          </button>
+        )}
       </div>
 
       <style>{`

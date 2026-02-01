@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import Hero from "./Hero/hero";
 import Department from "./Department/Department";
@@ -13,14 +13,27 @@ import Events from "./Events/Events";
 import WeAreHiring from "./components/WeAreHiring";
 
 export default function Home() {
+  const [isHiringOpen, setIsHiringOpen] = useState(false);
+
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    const fetchHiringStatus = async () => {
+      try {
+        const res = await fetch("/api/settings/hiring");
+        const data = await res.json();
+        setIsHiringOpen(data.isOpen);
+      } catch (err) {
+        console.error("Failed to fetch hiring status", err);
+      }
+    };
+    fetchHiringStatus();
   }, []);
 
   return (
     <div>
       <Hero />
-      <WeAreHiring />
+      {isHiringOpen && <WeAreHiring isOpen={true} />}
       <History />
       <AboutUs />
       <Benefits />

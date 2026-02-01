@@ -21,10 +21,22 @@ export default function DashboardLayout({ children }) {
   const [authenticated, setAuthenticated] = useState(false);
   const [passwordInput, setPasswordInput] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isHiringOpen, setIsHiringOpen] = useState(false);
 
   useEffect(() => {
     const auth = localStorage.getItem("dashboard-auth");
     if (auth === "true") setAuthenticated(true);
+
+    const fetchHiringStatus = async () => {
+      try {
+        const res = await fetch("/api/settings/hiring");
+        const data = await res.json();
+        setIsHiringOpen(data.isOpen);
+      } catch (err) {
+        console.error("Failed to fetch hiring status", err);
+      }
+    };
+    fetchHiringStatus();
   }, []);
 
   const handlePasswordSubmit = (e) => {
@@ -81,7 +93,9 @@ export default function DashboardLayout({ children }) {
             </div>
           </Link>
           <nav className="flex flex-col gap-2">
-            {navItems.map((item) => {
+            {navItems
+              .filter((item) => item.name !== "Hiring Members" || isHiringOpen)
+              .map((item) => {
               const active = pathname === item.path;
               return (
                 <Link key={item.path} href={item.path}>
@@ -146,7 +160,9 @@ export default function DashboardLayout({ children }) {
             </div>
 
             <nav className="flex flex-col gap-2">
-              {navItems.map((item) => {
+              {navItems
+                .filter((item) => item.name !== "Hiring Members" || isHiringOpen)
+                .map((item) => {
                 const active = pathname === item.path;
                 return (
                   <Link

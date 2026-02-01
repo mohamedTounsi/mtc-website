@@ -9,8 +9,24 @@ import {
   Star,
   Presentation,
 } from "lucide-react";
+import HiringToggle from "./components/HiringToggle";
+import { connectDB } from "@/lib/mongodb";
+import Setting from "@/models/setting";
 
-export default function DashboardPage() {
+async function getHiringStatus() {
+  try {
+    await connectDB();
+    const setting = await Setting.findOne({ key: "isHiringOpen" });
+    return setting ? setting.value : false;
+  } catch (error) {
+    console.error("Failed to fetch hiring status", error);
+    return false;
+  }
+}
+
+export default async function DashboardPage() {
+  const isHiringOpen = await getHiringStatus();
+
   const cards = [
     {
       icon: Users,
@@ -19,7 +35,7 @@ export default function DashboardPage() {
       gradient: "from-purple-500 to-pink-500",
       iconBg: "bg-purple-500/10",
       iconColor: "text-purple-400",
-      link: "/dashboard/members", // added link
+      link: "/dashboard/members", 
     },
     {
       icon: Calendar,
@@ -28,7 +44,7 @@ export default function DashboardPage() {
       gradient: "from-blue-500 to-cyan-500",
       iconBg: "bg-blue-500/10",
       iconColor: "text-blue-400",
-      link: "/dashboard/event-members", // added link
+      link: "/dashboard/event-members", 
     },
     {
       icon: AtSign,
@@ -37,7 +53,7 @@ export default function DashboardPage() {
       gradient: "from-green-500 to-emerald-500",
       iconBg: "bg-green-500/10",
       iconColor: "text-green-400",
-      link: "/dashboard/email-sender", // added link
+      link: "/dashboard/email-sender", 
     },
     {
       icon: Star,
@@ -57,7 +73,7 @@ export default function DashboardPage() {
       iconColor: "text-red-400",
       link: "/dashboard/recentEvents",
     },
-    {
+    ...(isHiringOpen ? [{
       icon: Users,
       title: "Hiring Members",
       description: "See Hiring Members",
@@ -65,14 +81,14 @@ export default function DashboardPage() {
       iconBg: "bg-purple-500/10",
       iconColor: "text-pink-400",
       link: "/dashboard/hiring-members",
-    },
+    }] : []),
   ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900/20 to-gray-900 text-white p-4 sm:p-6 lg:p-8">
       <div className="w-[90%] mx-auto">
         {/* Header Section */}
-        <div className="mb-12">
+        <div className="mb-8">
           <div className="relative">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent animate-pulse">
               Welcome Admin 👋
@@ -84,6 +100,9 @@ export default function DashboardPage() {
             dashboard.
           </p>
         </div>
+
+        {/* Toggle Section */}
+        <HiringToggle />
 
         {/* Cards Grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
