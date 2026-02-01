@@ -22,7 +22,6 @@ export default function Home() {
       try {
         const res = await fetch("/api/settings/hiring");
         const data = await res.json();
-        console.log('a');
         setIsHiringOpen(data.isOpen);
       } catch (err) {
         console.error("Failed to fetch hiring status", err);
